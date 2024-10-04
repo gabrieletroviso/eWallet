@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/statsDataConst"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/globalMeanConst"
+        android:layout_width="346dp"
+        android:layout_height="214dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="25dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/globalLbl">
+
+        <TextView
+            android:id="@+id/projLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="99dp"
+            android:layout_marginTop="14dp"
+            android:text="proiezione"
+            android:textColor="@color/apptext"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/bilMeanLbl"
+            app:layout_constraintTop_toBottomOf="@+id/expMeanVal" />
+
+        <EditText
+            android:id="@+id/projVal"
+            android:layout_width="158dp"
+            android:layout_height="61dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/border"
+            android:editable="false"
+            android:ems="10"
+            android:enabled="false"
+            android:fontFamily="@font/nunito"
+            android:gravity="center"
+            android:inputType="numberDecimal"
+            android:textColor="@color/apptext"
+            android:textIsSelectable="false"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/balMeanVal"
+            app:layout_constraintTop_toBottomOf="@+id/projLbl" />
+
+        <EditText
+            android:id="@+id/incMeanVal"
+            android:layout_width="158dp"
+            android:layout_height="61dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="2dp"
+            android:background="@drawable/border"
+            android:editable="false"
+            android:ems="10"
+            android:enabled="false"
+            android:fontFamily="@font/nunito"
+            android:gravity="center"
+            android:inputType="numberDecimal"
+            android:textColor="@color/apptext"
+            android:textIsSelectable="false"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/meanIncLbl" />
+
+        <TextView
+            android:id="@+id/meanIncLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="4dp"
+            android:text="entrate"
+            android:textColor="@color/apptext"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/bilMeanLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="14dp"
+            android:text="bilancio"
+            android:textColor="@color/apptext"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/incMeanVal" />
+
+        <EditText
+            android:id="@+id/expMeanVal"
+            android:layout_width="158dp"
+            android:layout_height="61dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/border"
+            android:editable="false"
+            android:ems="10"
+            android:enabled="false"
+            android:fontFamily="@font/nunito"
+            android:gravity="center"
+            android:inputType="numberDecimal"
+            android:textColor="@color/dark_red"
+            android:textIsSelectable="false"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/incMeanVal"
+            app:layout_constraintTop_toBottomOf="@+id/meanExpLbl" />
+
+        <EditText
+            android:id="@+id/balMeanVal"
+            android:layout_width="158dp"
+            android:layout_height="61dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/border"
+            android:editable="false"
+            android:ems="10"
+            android:enabled="false"
+            android:fontFamily="@font/nunito"
+            android:gravity="center"
+            android:inputType="numberDecimal"
+            android:textColor="@color/apptext"
+            android:textIsSelectable="false"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bilMeanLbl" />
+
+        <TextView
+            android:id="@+id/meanExpLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="106dp"
+            android:layout_marginTop="4dp"
+            android:text="spese"
+            android:textColor="@color/apptext"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/meanIncLbl"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/globalLbl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="178dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="178dp"
+        android:fontFamily="@font/nunito"
+        android:text="yearLbl"
+        android:textColor="@color/apptext"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dataYearHead" />
+
+    <TextView
+        android:id="@+id/expMeanLb"
+        android:layout_width="wrap_content"
+        android:layout_height="23dp"
+        android:layout_marginStart="178dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="178dp"
+        android:layout_marginBottom="6dp"
+        android:fontFamily="@font/nunito"
+        android:text="yearLbl"
+        android:textColor="@color/apptext"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/expMeanConst"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/globalMeanConst" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/expMeanConst"
+        android:layout_width="346dp"
+        android:layout_height="214dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="25dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/expMeanLb">
+
+        <EditText
+            android:id="@+id/meanExpNecVal"
+            android:layout_width="158dp"
+            android:layout_height="61dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="2dp"
+            android:background="@drawable/border"
+            android:editable="false"
+            android:ems="10"
+            android:enabled="false"
+            android:fontFamily="@font/nunito"
+            android:gravity="center"
+            android:inputType="numberDecimal"
+            android:textColor="@color/pastelblu"
+            android:textIsSelectable="false"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/menExpNecLbl" />
+
+        <EditText
+            android:id="@+id/meanExpUnnVal"
+            android:layout_width="158dp"
+            android:layout_height="61dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/border"
+            android:editable="false"
+            android:ems="10"
+            android:enabled="false"
+            android:fontFamily="@font/nunito"
+            android:gravity="center"
+            android:inputType="numberDecimal"
+            android:textColor="@color/pastelgreen"
+            android:textIsSelectable="false"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/meanExpNecVal"
+            app:layout_constraintTop_toBottomOf="@+id/meanExpUnnLbl" />
+
+        <EditText
+            android:id="@+id/meanExpExtraVal"
+            android:layout_width="158dp"
+            android:layout_height="61dp"
+            android:layout_marginStart="94dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="94dp"
+            android:background="@drawable/border"
+            android:editable="false"
+            android:ems="10"
+            android:enabled="false"
+            android:fontFamily="@font/nunito"
+            android:gravity="center"
+            android:inputType="numberDecimal"
+            android:textColor="@color/pastelpink"
+            android:textIsSelectable="false"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/meanExpExtLbl" />
+
+        <TextView
+            android:id="@+id/meanExpUnnLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="71dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="63dp"
+            android:text="superflue"
+            android:textColor="@color/apptext"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/menExpNecLbl"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/meanExpExtLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="126dp"
+            android:layout_marginTop="14dp"
+            android:text="extra"
+            android:textColor="@color/apptext"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/meanExpNecVal" />
+
+        <TextView
+            android:id="@+id/menExpNecLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="4dp"
+            android:text="necessarie"
+            android:textColor="@color/apptext"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/dataYearHead"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="133dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="132dp"
+        android:fontFamily="@font/nunito"
+        android:text="TextView"
+        android:textColor="@color/apptext"
+        android:textSize="34sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

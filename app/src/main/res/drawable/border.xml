@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Strato trasparente esterno -->
+    <item android:top="10dp" android:left="10dp" android:right="10dp" android:bottom="10dp">
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/transparent"/>
+        </shape>
+    </item>
+
+    <!-- Rettangolo con bordi smussati -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/white" /> <!-- Colore di sfondo interno -->
+            <stroke android:width="5dp" android:color="@color/apptext" /> <!-- Bordo colorato -->
+            <corners android:radius="30dp" /> <!-- Angoli arrotondati -->
+        </shape>
+    </item>
+
+</layer-list>

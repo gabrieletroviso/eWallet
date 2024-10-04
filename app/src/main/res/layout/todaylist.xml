@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/headerContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/todTrnHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Custom Font Header Left"
+            android:layout_marginEnd="16dp"
+            android:textColor="@color/apptext"
+            android:textSize="30sp"
+            android:fontFamily="@font/nunito"
+            android:gravity="center_horizontal"/>
+
+        <TextView
+            android:id="@+id/todTrnHeaderYear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Custom Font Header Right"
+            android:layout_marginStart="25dp"
+            android:textColor="@color/apptext"
+            android:textSize="16sp"
+            android:fontFamily="@font/nunito"
+            android:gravity="center_horizontal"/>
+
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/outerConstraintLayout"
+        android:layout_width="350dp"
+        android:layout_height="530dp"
+        android:layout_margin="16dp"
+        android:background="@drawable/border"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/innerConstraintLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ScrollView
+                android:id="@+id/scrollView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <TableLayout
+                    android:id="@+id/tableLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:stretchColumns="1">
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:padding="8dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Giorno"
+                            android:textSize="14dp"
+                            android:gravity="center"
+                            android:textColor="@color/apptext"
+                            android:textStyle="bold"
+                            android:fontFamily="@font/nunito"/>
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Sottotipo"
+                            android:gravity="center"
+                            android:textColor="@color/apptext"
+                            android:textStyle="bold"
+                            android:fontFamily="@font/nunito"/>
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Valore"
+                            android:textSize="14dp"
+                            android:gravity="center"
+                            android:textColor="@color/apptext"
+                            android:textStyle="bold"
+                            android:fontFamily="@font/nunito"/>
+                    </TableRow>
+
+                </TableLayout>
+
+            </ScrollView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

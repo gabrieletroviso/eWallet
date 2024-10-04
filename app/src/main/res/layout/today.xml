@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/homeAct"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="false">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="205dp" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/overvFrame"
+        android:layout_width="289dp"
+        android:layout_height="434dp"
+        android:layout_marginStart="87dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginEnd="87dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/yearTodLabel">
+
+        <TextView
+            android:id="@+id/incLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="100dp"
+            android:text="entrate"
+            android:textColor="@color/apptext"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/incValue"
+            android:layout_width="254dp"
+            android:layout_height="64dp"
+            android:layout_marginTop="3dp"
+            android:background="@drawable/border"
+            android:editable="false"
+            android:ems="10"
+            android:enabled="false"
+            android:fontFamily="@font/nunito"
+            android:gravity="center"
+            android:inputType="numberDecimal"
+            android:textColor="@color/apptext"
+            android:textIsSelectable="false"
+            android:textSize="34sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/incLbl" />
+
+        <TextView
+            android:id="@+id/expLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="5dp"
+            android:text="uscite"
+            android:textColor="@color/apptext"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/incValue" />
+
+        <EditText
+            android:id="@+id/expValue"
+            android:layout_width="254dp"
+            android:layout_height="64dp"
+            android:layout_marginTop="3dp"
+            android:background="@drawable/border"
+            android:editable="false"
+            android:ems="10"
+            android:enabled="false"
+            android:fontFamily="@font/nunito"
+            android:gravity="center"
+            android:inputType="numberDecimal"
+            android:textColor="@color/apptext"
+            android:textIsSelectable="false"
+            android:textSize="34sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/expLbl" />
+
+        <TextView
+            android:id="@+id/balLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="34dp"
+            android:text="bilancio"
+            android:textColor="@color/apptext"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/expValue" />
+
+        <EditText
+            android:id="@+id/balValue"
+            android:layout_width="254dp"
+            android:layout_height="64dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="3dp"
+            android:background="@drawable/border"
+            android:editable="false"
+            android:ems="10"
+            android:enabled="false"
+            android:gravity="center"
+            android:inputType="numberSigned"
+            android:textColor="@color/apptext"
+            android:textIsSelectable="false"
+            android:textSize="34sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.636"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/balLbl" />
+
+        <ImageView
+            android:id="@+id/balImg"
+            android:layout_width="36dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="90dp"
+            android:layout_marginBottom="5dp"
+            app:layout_constraintBottom_toTopOf="@+id/balValue"
+            app:layout_constraintStart_toEndOf="@+id/balLbl"
+            app:srcCompat="@drawable/draw" />
+
+        <Button
+            android:id="@+id/monthBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="67dp"
+            android:layout_marginStart="28dp"
+            android:layout_marginEnd="27dp"
+            android:background="?attr/selectableItemBackground"
+            android:fontFamily="@font/nunito"
+            android:text="monthLbl"
+            android:textAllCaps="false"
+            android:textColor="@color/apptext"
+            android:textSize="34sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/btnFrame"
+        android:layout_width="240dp"
+        android:layout_height="66dp"
+        android:layout_marginStart="84dp"
+        android:layout_marginTop="21dp"
+        android:layout_marginEnd="84dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.333"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/overvFrame">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/addBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="4dp"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:foregroundGravity="center"
+            android:scaleType="centerCrop"
+            app:backgroundTint="@color/dark_green"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/income" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/expBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="40dp"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            app:backgroundTint="@color/dark_red"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/expense" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/yearTodLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="171dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="171dp"
+        android:fontFamily="@font/nunito"
+        android:text="yearLbl"
+        android:textColor="@color/apptext"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
