@@ -29,12 +29,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         this.context = context;
     }
 
-    public void dailyBackUp(){
-        if(!LocalDate.now().equals(getBackupData())){
-            databaseBackUp();
-        }
-    }
-
     // Create or override db backup
     public void databaseBackUp(){
 

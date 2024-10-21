@@ -282,11 +282,15 @@ public class TransactionDialog extends ManagedDialog {
         CalendarConstraints.Builder constraintsBuilder = new CalendarConstraints.Builder();
 
         Calendar startCalendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-        startCalendar.set(y.getYear(), m.getMonth()-1, 1, 0, 0, 0);
+        startCalendar.set(y.getYear(), m.getMonth() - 1, 1, 0, 0, 0);
         long startDate = startCalendar.getTimeInMillis();
 
         Calendar endCalendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-        endCalendar.set(y.getYear(), m.getMonth()-1, endCalendar.getActualMaximum(Calendar.DAY_OF_MONTH), 23, 59, 59);
+        endCalendar.set(y.getYear(), m.getMonth() - 1, 1);
+        endCalendar.set(Calendar.DAY_OF_MONTH, endCalendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+        endCalendar.set(Calendar.HOUR_OF_DAY, 23);
+        endCalendar.set(Calendar.MINUTE, 59);
+        endCalendar.set(Calendar.SECOND, 59);
         long endDate = endCalendar.getTimeInMillis();
 
         constraintsBuilder.setStart(startDate);

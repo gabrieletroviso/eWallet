@@ -1,5 +1,7 @@
 package com.example.provajava.gui.fragment;
 
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,6 +20,7 @@ import com.example.provajava.DatabaseHelper;
 import com.example.provajava.R;
 import com.example.provajava.Tools;
 import com.example.provajava.datamodel.TTransaction;
+import com.example.provajava.gui.activity.MainActivity;
 import com.example.provajava.gui.activity.ToolActivityPage;
 import com.example.provajava.gui.fragment.interfaces.iFragmentManaged;
 
@@ -82,11 +85,18 @@ public class ToolFragment extends Fragment implements iFragmentManaged {
         clear.setOnClickListener(v -> clearDB());
         save.setOnClickListener(v -> createDBBackup());
         restore.setOnClickListener(v -> {
-            try {
-                restoreDBFromBackup();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+
+            new AlertDialog.Builder(getActivity())
+                    .setMessage("Necessario riavviare l'app. Continuare?")
+                    .setPositiveButton("Sì", (dialog, which) -> {
+                        try {
+                            restoreDBFromBackup();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
         });
     }
 
@@ -114,12 +124,15 @@ public class ToolFragment extends Fragment implements iFragmentManaged {
     }
 
     private void restoreDBFromBackup() throws IOException {
-
         if(isThereBkUp){
             dbahelper.restoreDB();
+            Intent intent = new Intent(getContext(), MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            getActivity().getParent().finish();
         }else{
             throw new IOException("Nessun backup presente");
         }
-
     }
 }

@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity{
 
     private void init(){
         DatabaseHelper dbh = new DatabaseHelper(getApplicationContext());
-        dbh.dailyBackUp();
+        dbh.databaseBackUp();
     }
 
     private void initView(){

@@ -90,6 +90,7 @@ public class TodayFragment extends Fragment implements iFragmentManaged {
 
         super.onCreate(savedInstanceState);
         view = inflater.inflate(R.layout.today, container, false);
+        day = LocalDate.now();
         populateView(view);
         return view;
 
@@ -115,8 +116,6 @@ public class TodayFragment extends Fragment implements iFragmentManaged {
         TextView yearLbl = view.findViewById(R.id.yearTodLabel);
         monthBtn.setText(Month.of(month.getMonth()).getDisplayName(TextStyle.FULL, Locale.ITALIAN));
         yearLbl.setText(String.valueOf(dba.getYearById(month.getYearId()).getYear()));
-
-        //listner.onChangeMonth(month);
 
         monthBtn.setOnClickListener(v -> {
             BottomSheetMonth bottomSheet = new BottomSheetMonth(this, dba);

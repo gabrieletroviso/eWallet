@@ -350,13 +350,19 @@ public class DatabaseAccess {
     // Clear all db
     public void clearAllDb(){
         executor = Executors.newSingleThreadExecutor();
-        executor.submit(() -> engine.clearAll());
+        try{
+            Future<?> future = executor.submit(() -> engine.clearAll());
+            future.get();
+        }catch (InterruptedException | ExecutionException e) {}
     }
 
     // Delete input transaction
     public void deleteTransaction(TTransaction t){
         executor = Executors.newSingleThreadExecutor();
-        executor.submit(() -> engine.deleteTransaction(t));
+        try{
+            Future<?> future = executor.submit(() -> engine.deleteTransaction(t));
+            future.get();
+        }catch (InterruptedException | ExecutionException e) {}
     }
 
 }

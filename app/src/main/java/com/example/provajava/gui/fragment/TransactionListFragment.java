@@ -198,6 +198,7 @@ public class TransactionListFragment extends Fragment implements iFragmentManage
                     dba, trns.getTranMainType().equals(eTranMainType.INCOME) ? true : false,
                     trns, this);
             dialog.show(getParentFragmentManager(), "Income");
+            popupWindow.dismiss();
         });
 
         del.setOnClickListener(v -> {
