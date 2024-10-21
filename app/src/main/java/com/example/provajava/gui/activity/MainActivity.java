@@ -14,7 +14,7 @@ import com.example.provajava.R;
 
 public class MainActivity extends AppCompatActivity{
 
-    private static String VER = "Versione 0.0 Beta";
+    private static String VER = "Versione 1.0 Beta";
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
