@@ -31,6 +31,8 @@ public class TMonth implements Parcelable {
     private long yearId;
     @ColumnInfo(name="TotIncome")
     private double totIncome;
+    @ColumnInfo(name="TotSalIncome")
+    private double totSalIncome;
     @ColumnInfo(name="TotOthIncome")
     private double totOthIncome;
     @ColumnInfo(name="TotExpenses")
@@ -52,6 +54,7 @@ public class TMonth implements Parcelable {
         month = 0;
         yearId = 0;
         totIncome = 0;
+        totSalIncome = 0;
         totOthIncome = 0;
         totExpenses = 0;
         totNecExpenses = 0;
@@ -97,7 +100,15 @@ public class TMonth implements Parcelable {
     public void setTotIncome(double tot){
         this.totIncome = tot;
     }
-    
+
+    public double getTotSalIncome() {
+        return totSalIncome;
+    }
+
+    public void setTotSalIncome(double tot){
+        this.totSalIncome = tot;
+    }
+
     public double getTotOthIncome(){
         return totOthIncome;
     }
