@@ -94,7 +94,7 @@ public class Engine {
         TYear year = yDao.getYearByID(tran.getYearId());
 
         tDao.update(tran);
-        updateMonth(year, month, tran);
+        updateMonth(year, month);
 
     }
 
@@ -118,7 +118,7 @@ public class Engine {
         trns.setMonthId(month.getId());
         trns.setDayId(day.getId());
         
-        updateMonth(year, month, trns);
+        updateMonth(year, month);
 
         trns.setId(tDao.insert(trns));
         return trns;
@@ -212,7 +212,7 @@ public class Engine {
         TYear year = yDao.getYearByID(transaction.getYearId());
 
         tDao.delete(transaction);
-        updateMonth(year, month, transaction, true);
+        updateMonth(year, month);
 
     }
 
@@ -258,29 +258,18 @@ public class Engine {
         return daydm;
     }
 
-    private void updateMonth(TYear year, TMonth month, TTransaction trns){
-        updateMonth(year, month, trns, false);
-    }
-
     // Update month after transaction. 
     // At the end update also year
-    private void updateMonth(TYear year, TMonth month, TTransaction trns, boolean isDel){
-        
-        double amnt = trns.getAmount();
+    private void updateMonth(TYear year, TMonth month){
 
-        if(isDel){
-            amnt = (-1)*amnt;
-        }
-
-        switch(trns.getTranSubType()){
-            case NECESSARY: month.incrementTotNecExp(amnt); break;
-            case UNNECESSARY: month.incrementTotUnnExp(amnt); break;
-            case EXTRA: month.incrementTotExtraExp(amnt); break;
-            case OTHER_INCOME: month.incrementTotOthIncome(amnt); break;
-            case SALARY: month.incrementTotIncome(amnt); break;
-            case TRADE: month.incrementTrade(amnt); break;
-        }
-        
+        month.setTotExpenses(mDao.getTotalMontAmountByMainType(month.getId(), eTranMainType.EXPENSE));
+        month.setTotIncome(mDao.getTotalMontAmountByMainType(month.getId(), eTranMainType.INCOME));
+        month.setTotExtraExpenses(mDao.getTotalMonthAmountBySubtype(month.getId(), eTranSubType.EXTRA));
+        month.setTotUnnecExpenses(mDao.getTotalMonthAmountBySubtype(month.getId(), eTranSubType.UNNECESSARY));
+        month.setTotNecExpenses(mDao.getTotalMonthAmountBySubtype(month.getId(), eTranSubType.NECESSARY));
+        month.setTotSalIncome(mDao.getTotalMonthAmountBySubtype(month.getId(), eTranSubType.SALARY));
+        month.setTotOthIncome(mDao.getTotalMonthAmountBySubtype(month.getId(), eTranSubType.OTHER_INCOME));
+        month.setBalance(month.getTotIncome()-month.getTotExpenses());
         mDao.update(month);
         
         updateYear(year);

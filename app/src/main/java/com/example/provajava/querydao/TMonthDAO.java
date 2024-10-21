@@ -63,29 +63,14 @@ public interface TMonthDAO {
     @Query("SELECT SUM(Trade) FROM T_Month WHERE Year_ID = :yId")
     double getTotalTrades(long yId);
 
+    @Query("SELECT SUM(Amount) FROM T_TRANSACTION WHERE Month_ID = :mId AND TransactionSubType = :type")
+    double getTotalMonthAmountBySubtype(long mId, eTranSubType type);
+
+    @Query("SELECT SUM(Amount) FROM T_TRANSACTION WHERE Month_ID = :mId AND TransactionMainType = :type")
+    double getTotalMontAmountByMainType(long mId, eTranMainType type);
+
     @Query("SELECT COUNT(1) FROM T_Month WHERE Year_ID = :yId")
     double getMonthsNumberByYearID(long yId);
-
-    @Query("SELECT ID FROM T_Month WHERE Month = :m AND Year_ID = :yId")
-    int getMonthIDByMonthAndYearID(int m, long yId);
-
-    @Query("UPDATE T_Month SET TotOthIncome = (SELECT SUM(Amount) FROM T_Transaction WHERE TransactionSubType = :sub AND Month_ID = :mId) WHERE id = :mId")
-    void updateMonthOtherIncomes(eTranSubType sub, long mId);
-
-    @Query("UPDATE T_Month SET TotIncome = (SELECT SUM(Amount) FROM T_Transaction WHERE TransactionSubType = :sub AND Month_ID = :mId) WHERE id = :mId")
-    void updateMonthSalary(eTranSubType sub, long mId);
-
-    @Query("UPDATE T_Month SET TotExpenses = (SELECT SUM(Amount) FROM T_Transaction WHERE TransactionMainType = :main AND Month_ID = :mId) WHERE id = :mId")
-    void updateMonthExpenses(eTranMainType main, long mId);
-
-    @Query("UPDATE T_Month SET TotUnnecExpenses = (SELECT SUM(Amount) FROM T_Transaction WHERE TransactionSubType = :sub AND Month_ID = :mId) WHERE id = :mId")
-    void updateMonthUnnecExpenses(eTranSubType sub, long mId);
-
-    @Query("UPDATE T_Month SET TotNecExpenses = (SELECT SUM(Amount) FROM T_Transaction WHERE TransactionSubType = :sub AND Month_ID = :mId) WHERE id = :mId")
-    void updateMonthNecExpenses(eTranSubType sub, long mId);
-
-    @Query("UPDATE T_Month SET TotExtraExpenses = (SELECT SUM(Amount) FROM T_Transaction WHERE TransactionSubType = :sub AND Month_ID = :mId) WHERE id = :mId")
-    void updateMonthExtraExpenses(eTranSubType sub, long mId);
 
     @Query("UPDATE T_Month SET Balance = (SELECT SUM(Amount) FROM T_Transaction WHERE Month_ID = :mId) WHERE id = :mId")
     void updateMonthBalance(long mId);

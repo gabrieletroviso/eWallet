@@ -11,11 +11,11 @@
         android:layout_width="243dp"
         android:layout_height="244dp"
         android:layout_marginStart="84dp"
+        android:layout_marginTop="124dp"
         android:layout_marginEnd="84dp"
-        android:layout_marginBottom="139dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gtText">
 
         <ImageButton
             android:id="@+id/todStatBtn"
@@ -89,7 +89,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="142dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="2dp"
         android:layout_marginEnd="143dp"
         android:layout_marginBottom="125dp"
         android:fontFamily="@font/nunito"
@@ -107,5 +107,21 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_begin="207dp" />
+
+    <TextView
+        android:id="@+id/versTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="185dp"
+        android:layout_marginTop="118dp"
+        android:layout_marginEnd="185dp"
+        android:layout_marginBottom="7dp"
+        android:text="TextView"
+        android:textColor="@color/apptext"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnConstr" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

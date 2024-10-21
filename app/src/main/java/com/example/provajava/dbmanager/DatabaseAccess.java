@@ -181,7 +181,7 @@ public class DatabaseAccess {
         executor = Executors.newSingleThreadExecutor();
         try {
             Future<?> future = executor.submit(() -> engine.updateTransaction(transaction));
-            future.get(); // Attende la fine del task
+            future.get();
         } catch (InterruptedException | ExecutionException e) {}
         
     }

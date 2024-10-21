@@ -172,40 +172,6 @@ public class TMonth implements Parcelable {
     public void setEndPosition(double end){
         this.endPosition = end;
     }
-    
-    public void incrementTotOthIncome(double i){
-        this.totOthIncome+=i;
-        incrementTotIncome(i);
-    }
-    
-    public void incrementTotIncome(double i){
-        this.totIncome+=i;
-        this.balance+=i;
-    }
-    
-    public void incrementTotNecExp(double a){
-        this.totNecExpenses += a;
-        incrementTotExp(a);
-    }
-    
-    public void incrementTotExtraExp(double a){
-        this.totExtraExpenses += a;
-        incrementTotExp(a);
-    }
-    
-    public void incrementTotUnnExp(double a){
-        this.totUnnecExpenses += a;
-        incrementTotExp(a);
-    }
-    
-    public void incrementTrade(double a){
-        this.trade+=a;
-    }
-    
-    private void incrementTotExp(double a){
-        this.totExpenses += a;
-        this.balance -=a;
-    }
 
     @Override
     public int describeContents() {
