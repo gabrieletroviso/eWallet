@@ -54,8 +54,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 dst.flush();
                 src.close();
                 dst.close();
-                getWritableDatabase();
-                Database.getInstance(context);
             }
         } catch (IOException e) {
             Log.d("DatabaseExport", e.getLocalizedMessage());

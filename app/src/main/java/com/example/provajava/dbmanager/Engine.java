@@ -117,10 +117,10 @@ public class Engine {
         trns.setYearId(year.getId());
         trns.setMonthId(month.getId());
         trns.setDayId(day.getId());
-        
-        updateMonth(year, month);
 
         trns.setId(tDao.insert(trns));
+        updateMonth(year, month);
+
         return trns;
     }
     
