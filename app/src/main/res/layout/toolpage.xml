@@ -42,7 +42,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/today" />
+                app:srcCompat="@drawable/accbalance" />
 
             <ImageButton
                 android:id="@+id/statisticsToolBtn"
@@ -58,7 +58,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/todToolBtn"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/stats" />
+                app:srcCompat="@drawable/barchar" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.viewpager2.widget.ViewPager2

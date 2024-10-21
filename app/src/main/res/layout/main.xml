@@ -25,7 +25,7 @@
             android:scaleType="centerCrop"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/today" />
+            app:srcCompat="@drawable/accbalance" />
 
         <ImageButton
             android:id="@+id/prefBtn"
@@ -49,7 +49,7 @@
             android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/stats" />
+            app:srcCompat="@drawable/barchar" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
