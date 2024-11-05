@@ -10,7 +10,7 @@ Finally, there is a section to manage DB (which is local DB called "eWalletDB").
 
 This is a personal exercise project. If you download and use this repo, please note:
 
-- You may encounter errors and bugs.
+- You may encounter errors and bugs (feel free to report any you find!).
 - Labels and graphic elements are in Italian and may lack proper design refinement.
 - Comments in the code may contain errors in English.
 
