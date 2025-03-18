@@ -29,15 +29,31 @@
             app:layout_constraintTop_toBottomOf="@+id/statisticsViewPage">
 
             <ImageButton
-                android:id="@+id/statisticsTodBtn"
+                android:id="@+id/statisticsSrcBtn"
                 android:layout_width="65dp"
                 android:layout_height="65dp"
-                android:layout_marginStart="98dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="54dp"
+                android:layout_marginBottom="16dp"
                 android:background="?attr/selectableItemBackground"
                 android:scaleType="centerCrop"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/statisticsPrefBtn"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/search" />
+
+            <ImageButton
+                android:id="@+id/statisticsTodBtn"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
+                android:layout_marginStart="54dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="54dp"
+                android:layout_marginBottom="16dp"
+                android:background="?attr/selectableItemBackground"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/statisticsSrcBtn"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/accbalance" />
@@ -46,15 +62,13 @@
                 android:id="@+id/statisticsPrefBtn"
                 android:layout_width="65dp"
                 android:layout_height="65dp"
-                android:layout_marginStart="83dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="98dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="53dp"
+                android:layout_marginBottom="16dp"
                 android:background="?attr/selectableItemBackground"
                 android:scaleType="centerCrop"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/statisticsTodBtn"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/manufacturing" />
         </androidx.constraintlayout.widget.ConstraintLayout>

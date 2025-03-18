@@ -34,9 +34,7 @@ import com.example.provajava.enumerator.eTranMainType;
 import com.example.provajava.gui.activity.TodayActivityPage;
 import com.example.provajava.gui.fragment.dialog.TransactionDialog;
 import com.example.provajava.gui.fragment.interfaces.iFragmentManaged;
-import com.github.mikephil.charting.charts.ScatterChart;
 
-import java.text.DecimalFormat;
 import java.time.Instant;
 import java.time.Month;
 import java.time.ZoneId;
@@ -44,7 +42,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 public class TransactionListFragment extends Fragment implements iFragmentManaged {
 

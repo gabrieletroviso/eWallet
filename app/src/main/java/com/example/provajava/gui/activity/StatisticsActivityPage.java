@@ -21,6 +21,7 @@ import com.example.provajava.gui.fragment.ExpensesFragment;
 import com.example.provajava.gui.fragment.IncomeFragment;
 import com.example.provajava.gui.fragment.StatisticsDataFragment;
 import com.example.provajava.gui.fragment.StatisticsFragment;
+import com.example.provajava.gui.fragment.TransactionSearchFragment;
 
 import java.time.LocalDate;
 
@@ -52,10 +53,16 @@ public class StatisticsActivityPage extends AppCompatActivity implements iActivi
     private void manageButtons(){
 
         ImageButton today = findViewById(R.id.statisticsTodBtn);
+        ImageButton src = findViewById(R.id.statisticsSrcBtn);
         ImageButton pref = findViewById(R.id.statisticsPrefBtn);
 
         today.setOnClickListener(v -> {
             Intent intent = new Intent(StatisticsActivityPage.this, TodayActivityPage.class);
+            startActivity(intent);
+        });
+
+        src.setOnClickListener(v -> {
+            Intent intent = new Intent(StatisticsActivityPage.this, SearchActivityPage.class);
             startActivity(intent);
         });
 

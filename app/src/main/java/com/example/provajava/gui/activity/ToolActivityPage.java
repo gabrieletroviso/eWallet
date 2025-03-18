@@ -34,12 +34,14 @@ public class ToolActivityPage extends AppCompatActivity {
         dba = new DatabaseAccess(getApplicationContext());
 
         manageToolbarButtons();
+
     }
 
     private void manageToolbarButtons(){
 
-        ImageButton today = findViewById(R.id.todToolBtn);
+        ImageButton today = findViewById(R.id.todSearchBtn);
         ImageButton stats = findViewById(R.id.statisticsToolBtn);
+        ImageButton src = findViewById(R.id.todSearchBtn);
 
         today.setOnClickListener(v -> {
             Intent intent = new Intent(ToolActivityPage.this, TodayActivityPage.class);
@@ -48,6 +50,11 @@ public class ToolActivityPage extends AppCompatActivity {
 
         stats.setOnClickListener(v -> {
             Intent intent = new Intent(ToolActivityPage.this, StatisticsActivityPage.class);
+            startActivity(intent);
+        });
+
+        src.setOnClickListener(v -> {
+            Intent intent = new Intent(ToolActivityPage.this, SearchActivityPage.class);
             startActivity(intent);
         });
 

@@ -18,6 +18,7 @@ import com.example.provajava.datamodel.TTransaction;
 import com.example.provajava.dbmanager.DatabaseAccess;
 import com.example.provajava.gui.fragment.TodayFragment;
 import com.example.provajava.gui.fragment.TransactionListFragment;
+import com.example.provajava.gui.fragment.TransactionSearchFragment;
 
 import java.time.LocalDate;
 
@@ -25,6 +26,7 @@ public class TodayActivityPage extends AppCompatActivity implements iActivityMan
 
     private TransactionListFragment listFragment;
     private TodayFragment todayFragment;
+    private TransactionSearchFragment searchFragment;
     private DatabaseAccess dba;
     private TMonth month;
 
@@ -50,10 +52,16 @@ public class TodayActivityPage extends AppCompatActivity implements iActivityMan
     private void manageButtons(){
 
         ImageButton stat = findViewById(R.id.todStatBtn);
+        ImageButton src = findViewById(R.id.todSrcBtn);
         ImageButton pref = findViewById(R.id.statisticsPrefBtn);
 
         stat.setOnClickListener(v -> {
             Intent intent = new Intent(TodayActivityPage.this, StatisticsActivityPage.class);
+            startActivity(intent);
+        });
+
+        src.setOnClickListener(v -> {
+            Intent intent = new Intent(TodayActivityPage.this, SearchActivityPage.class);
             startActivity(intent);
         });
 

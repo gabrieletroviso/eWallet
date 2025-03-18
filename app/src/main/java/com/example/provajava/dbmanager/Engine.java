@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
+import androidx.sqlite.db.SupportSQLiteQuery;
 
 import com.example.provajava.querydao.*;
 import com.example.provajava.datamodel.*;
@@ -216,6 +217,17 @@ public class Engine {
 
     }
 
+    // Get transactions filtered by subtype, interval of dates and values, and description.
+    // Description is checked in every position in description column
+    public List<TTransaction> getFilteredTransactions(
+            List<eTranSubType> types, long from, long to, double more, double less, String desc){
+        return tDao.getFilteredTransactions(types, from, to, more, less, desc);
+    };
+
+    public List<TTransaction> getFilteredTransactionsV2(SupportSQLiteQuery query){
+        return tDao.getFilteredTransactionsV2(query);
+    };
+
     // Return id of year record
     private TYear findOrCreateYear(int year){
         
@@ -306,7 +318,7 @@ public class Engine {
         
         yDao.update(year);
     }
-    
+
     private double[] getPeriodExpensesAnnualMean(int year, int start, int end){
         
         double nec = tDao.getFirstPeriodAnnualMeanExpenses(

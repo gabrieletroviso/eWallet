@@ -1,14 +1,17 @@
 package com.example.provajava.gui.fragment;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,7 +21,6 @@ import androidx.fragment.app.Fragment;
 
 import com.example.provajava.DatabaseHelper;
 import com.example.provajava.R;
-import com.example.provajava.Tools;
 import com.example.provajava.datamodel.TTransaction;
 import com.example.provajava.gui.activity.MainActivity;
 import com.example.provajava.gui.activity.ToolActivityPage;
@@ -43,6 +45,7 @@ public class ToolFragment extends Fragment implements iFragmentManaged {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
         view = inflater.inflate(R.layout.toolfrag, container, false);
         dbahelper = new DatabaseHelper(listner.getApplicationContext());
 
@@ -104,19 +107,14 @@ public class ToolFragment extends Fragment implements iFragmentManaged {
 
         TextView data = view.findViewById(R.id.restData);
         LocalDate bData = dbahelper.getBackupData();
+//        try {
+//            isThereBkUp = GoogleDriveHelper.checkFileInAppDataUpper(getContext());
+//        }catch (Exception ex){}
 
-        if(bData!=null){
-            isThereBkUp = true;
-            data.setText("(ultimo backup: "+Tools.formattedDate(bData)+")");
-        }else{
-            isThereBkUp = false;
-            data.setText("(nessun backup presente)");
-        }
     }
 
     private void createDBBackup(){
-        dbahelper.databaseBackUp();
-        populateView();
+        saveDBOnDrive();
     }
 
     private void clearDB(){
@@ -125,7 +123,8 @@ public class ToolFragment extends Fragment implements iFragmentManaged {
 
     private void restoreDBFromBackup() throws IOException {
         if(isThereBkUp){
-            dbahelper.restoreDB();
+//            dbahelper.restoreDB();
+            //GoogleDriveHelper.downloadDBFromDrive(getContext(), true);
             Intent intent = new Intent(getContext(), MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -135,4 +134,11 @@ public class ToolFragment extends Fragment implements iFragmentManaged {
             throw new IOException("Nessun backup presente");
         }
     }
+
+    // Save database components on google drive.
+    // Saving happen on specific thread
+    public void saveDBOnDrive(){
+        //GoogleDriveHelper.saveDBOnDrive(getContext(), true);
+    }
+
 }

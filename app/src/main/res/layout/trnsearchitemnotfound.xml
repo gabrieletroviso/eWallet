@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="2dp"> <!-- Ridotto il padding generale -->
+
+    <!-- Singolo rettangolo -->
+    <TextView
+        android:id="@+id/single_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/nunito"
+        android:gravity="center"
+        android:padding="4dp"
+        android:text="Single Row Text"
+        android:textSize="14sp"
+        android:layout_margin="4dp" />
+
+</TableRow>

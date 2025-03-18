@@ -3,8 +3,11 @@ package com.example.provajava.querydao;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.RawQuery;
 import androidx.room.Update;
 import androidx.room.Query;
+import androidx.sqlite.db.SupportSQLiteQuery;
+
 import com.example.provajava.datamodel.TTransaction;
 import com.example.provajava.enumerator.*;
 import java.util.List;
@@ -76,4 +79,16 @@ public interface TTransactionDAO {
 
     @Query("DELETE FROM T_Transaction")
     void deleteAll();
+
+    @Query("SELECT * FROM T_Transaction " +
+            "WHERE (COALESCE(:types, '') = '' OR TransactionSubType IN (:types)) " +
+            "AND Date BETWEEN :from AND :to " +
+            "AND (Amount >= COALESCE(:more, -1)) " +
+            "AND (Amount <= COALESCE(:less, 1e18)) " +
+            "AND (COALESCE(:desc, '') = '' OR Description LIKE '%' || :desc || '%') " +
+            "ORDER BY Date DESC")
+    List<TTransaction> getFilteredTransactions(List<eTranSubType> types, Long from, Long to, Double more, Double less, String desc);
+
+    @RawQuery
+    List<TTransaction> getFilteredTransactionsV2(SupportSQLiteQuery query);
 }

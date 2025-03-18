@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
+import androidx.sqlite.db.SimpleSQLiteQuery;
+import androidx.sqlite.db.SupportSQLiteQuery;
 
 import com.example.provajava.datamodel.TDay;
 import com.example.provajava.datamodel.TMonth;
@@ -13,6 +15,7 @@ import com.example.provajava.enumerator.eTranSubType;
 import com.example.provajava.enumerator.eOrder;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.List;
@@ -77,6 +80,47 @@ public class DatabaseAccess {
             Future<TMonth> future = executor.submit(() -> engine.getMonth(m, y));
             ret = future.get();
         }catch (ExecutionException | InterruptedException ex){}
+
+        return ret;
+    }
+
+    // Get transactions filtered by subtype (or not), interval of dates and values, and description.
+    // Description is checked in every position in description column
+    public List<TTransaction> getFilteredTransactions(
+            List<eTranSubType> types, long from, long to, Double more, Double less, String desc
+    ){
+
+        executor = Executors.newSingleThreadExecutor();
+        List<TTransaction> ret = null;
+        try{
+            Future<List<TTransaction>> future;
+            future = executor.submit(() -> engine.getFilteredTransactions(types, from, to, more, less,desc));
+            ret = future.get();
+        } catch(ExecutionException | InterruptedException ex){};
+
+        return ret;
+    }
+
+    public List<TTransaction> getFilteredTransactionsV2(
+            List<eTranSubType> types, long from, long to, Double more, Double less, String desc
+    ){
+
+        String strQry = buildQuery(types, from, to, more, less, desc);
+        Object[] args = buildArgs(types, from, to, more, less, desc);
+
+        SupportSQLiteQuery query = new SimpleSQLiteQuery(strQry, args);
+
+        executor = Executors.newSingleThreadExecutor();
+        List<TTransaction> ret = null;
+        try {
+            Future<List<TTransaction>> future;
+            future = executor.submit(() -> engine.getFilteredTransactionsV2(query));
+            ret = future.get();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            executor.shutdown();
+        }
 
         return ret;
     }
@@ -365,4 +409,71 @@ public class DatabaseAccess {
         }catch (InterruptedException | ExecutionException e) {}
     }
 
+    // Build query string to filter transactions
+    private String buildQuery(
+            List<eTranSubType> types, long from, long to, Double more, Double less, String desc
+    ){
+        StringBuilder str = new StringBuilder("SELECT * FROM T_Transaction WHERE 1=1 ");
+
+        if (types != null && !types.isEmpty()) {
+            str.append("AND TransactionSubType IN (");
+            for (int i = 0; i < types.size(); i++) {
+                str.append("?");
+                if (i != types.size() - 1) {
+                    str.append(", ");
+                }
+            }
+            str.append(") ");
+        }
+
+        str.append("AND Date BETWEEN ? AND ? ");
+
+        if (more != null) {
+            str.append("AND Amount >= ? ");
+        }
+
+        if (less != null) {
+            str.append("AND Amount <= ? ");
+        }
+
+        if (desc != null) {
+            str.append("AND Description LIKE '%' || ? || '%' ");
+        }
+
+        str.append("ORDER BY Date DESC");
+
+        return str.toString();
+    }
+
+    // Build args array to run filtered query
+    public Object[] buildArgs(
+            List<eTranSubType> types, long from, long to, Double more, Double less, String desc
+    ){
+
+        int paramCount = 0;
+        ArrayList<Object> args = new ArrayList<>();
+
+        if (types != null && !types.isEmpty()) {
+            for (eTranSubType type : types) {
+                args.add(Converters.TranSubTypeToString(type));
+            }
+        }
+
+        args.add(from);
+        args.add(to);
+
+        if (more != null) {
+            args.add(more);
+        }
+
+        if (less != null) {
+            args.add(less);
+        }
+
+        if (desc != null) {
+            args.add(desc);
+        }
+
+        return args.toArray();
+    }
 }

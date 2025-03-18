@@ -109,6 +109,7 @@
             android:editable="false"
             android:ems="10"
             android:enabled="false"
+            android:fontFamily="@font/nunito"
             android:gravity="center"
             android:inputType="numberSigned"
             android:textColor="@color/apptext"

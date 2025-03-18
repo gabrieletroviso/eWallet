@@ -1,11 +1,13 @@
 package com.example.provajava.gui.activity;
 
 import android.content.Intent;
+import android.content.IntentSender;
 import android.os.Build;
 import android.os.Bundle;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,7 +16,9 @@ import com.example.provajava.R;
 
 public class MainActivity extends AppCompatActivity{
 
-    private static String VER = "Versione 1.0 Beta";
+    private static final String VER = "Versione 1.1 Beta";
+    public ActivityResultLauncher<IntentSender> signInLauncher;
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +27,6 @@ public class MainActivity extends AppCompatActivity{
         init();
         initView();
         manageButtons();
-
     }
 
     private void init(){
@@ -42,6 +45,7 @@ public class MainActivity extends AppCompatActivity{
          ImageButton today = findViewById(R.id.todStatBtn);
          ImageButton stats = findViewById(R.id.trdStatBtn);
          ImageButton prefs = findViewById(R.id.prefBtn);
+         ImageButton srch = findViewById(R.id.srchBtn);
 
         today.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, TodayActivityPage.class);
@@ -58,6 +62,10 @@ public class MainActivity extends AppCompatActivity{
             startActivity(intent);
         });
 
-    }
+        srch.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, SearchActivityPage.class);
+            startActivity(intent);
+        });
 
+    }
 }

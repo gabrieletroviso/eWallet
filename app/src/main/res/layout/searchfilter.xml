@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/mainConstr"
+        android:layout_width="362dp"
+        android:layout_height="484dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="62dp"
+        android:background="@drawable/border"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchBtn">
+
+        <TextView
+            android:id="@+id/fromTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="92dp"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/nunito"
+            android:text="Inizio"
+            android:textColor="@color/apptext"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/totxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="107dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="102dp"
+            android:fontFamily="@font/nunito"
+            android:text="Fine"
+            android:textColor="@color/apptext"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/fromTxt"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/fromBtn"
+            android:layout_width="121dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="49dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="19dp"
+            android:layout_marginBottom="13dp"
+            android:backgroundTint="@android:color/white"
+            android:fontFamily="@font/nunito"
+            android:gravity="center"
+            android:text="Button"
+            android:textColor="@color/apptext"
+            app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
+            app:layout_constraintEnd_toStartOf="@+id/toBtn"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fromTxt" />
+
+        <Button
+            android:id="@+id/toBtn"
+            android:layout_width="121dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="52dp"
+            android:layout_marginBottom="13dp"
+            android:backgroundTint="@android:color/white"
+            android:fontFamily="@font/nunito"
+            android:gravity="center"
+            android:text="Button"
+            android:textColor="@color/apptext"
+            app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/totxt" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout2"
+            android:layout_width="243dp"
+            android:layout_height="107dp"
+            android:layout_marginStart="61dp"
+            android:layout_marginEnd="58dp"
+            android:layout_marginBottom="9dp"
+            app:layout_constraintBottom_toTopOf="@+id/constraintLayout3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:id="@+id/moreTxt2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="28dp"
+                android:fontFamily="@font/nunito"
+                android:text="Maggiore di"
+                android:textColor="@color/apptext"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toTopOf="@+id/lessTxt"
+                app:layout_constraintEnd_toStartOf="@+id/moreVal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/lessTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="17dp"
+                android:layout_marginBottom="23dp"
+                android:fontFamily="@font/nunito"
+                android:text="Minore di"
+                android:textColor="@color/apptext"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/lessVal"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <EditText
+                android:id="@+id/lessVal"
+                android:layout_width="120dp"
+                android:layout_height="49dp"
+                android:layout_marginEnd="14dp"
+                android:layout_marginBottom="8dp"
+                android:ems="10"
+                android:fontFamily="@font/nunito"
+                android:gravity="clip_horizontal|center_horizontal"
+                android:inputType="numberDecimal"
+                android:textColor="@color/apptext"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <EditText
+                android:id="@+id/moreVal"
+                android:layout_width="120dp"
+                android:layout_height="49dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="14dp"
+                android:ems="10"
+                android:fontFamily="@font/nunito"
+                android:gravity="clip_horizontal|center_horizontal"
+                android:inputType="numberDecimal"
+                android:textColor="@color/apptext"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toTopOf="@+id/lessVal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout3"
+            android:layout_width="228dp"
+            android:layout_height="84dp"
+            android:layout_marginStart="66dp"
+            android:layout_marginTop="9dp"
+            android:layout_marginEnd="68dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
+
+            <TextView
+                android:id="@+id/descTest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="79dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginEnd="75dp"
+                android:layout_marginBottom="6dp"
+                android:fontFamily="@font/nunito"
+                android:text="Descrizione"
+                android:textColor="@color/apptext"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toTopOf="@+id/descVal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/descVal"
+                android:layout_width="200dp"
+                android:layout_height="47dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="5dp"
+                android:ems="10"
+                android:fontFamily="@font/nunito"
+                android:gravity="clip_horizontal|center_horizontal"
+                android:textColor="@color/apptext"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout4"
+            android:layout_width="299dp"
+            android:layout_height="141dp"
+            android:layout_marginStart="33dp"
+            android:layout_marginTop="7dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="19dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
+
+            <TextView
+                android:id="@+id/subTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="120dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="119dp"
+                android:fontFamily="@font/nunito"
+                android:text="Sottotipo"
+                android:textColor="@color/apptext"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toTopOf="@+id/salChip4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/necTxt"
+                android:layout_width="76dp"
+                android:layout_height="18dp"
+                android:layout_marginTop="11dp"
+                android:layout_marginEnd="23dp"
+                android:layout_marginBottom="18dp"
+                android:fontFamily="@font/nunito"
+                android:text="Necessaria"
+                android:textColor="@color/apptext"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toTopOf="@+id/unnTxt"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/subTxt" />
+
+            <Switch
+                android:id="@+id/necChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="1dp"
+                android:layout_marginBottom="8dp"
+                android:thumbTint="@color/buttondefault"
+                android:trackTint="@android:color/darker_gray"
+                app:layout_constraintBottom_toTopOf="@+id/unnChip"
+                app:layout_constraintEnd_toStartOf="@+id/necTxt"
+                app:layout_constraintTop_toBottomOf="@+id/subTxt" />
+
+            <Switch
+                android:id="@+id/salChip4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="17dp"
+                android:layout_marginBottom="9dp"
+                android:thumbTint="@color/buttondefault"
+                android:trackTint="@android:color/darker_gray"
+                app:layout_constraintBottom_toTopOf="@+id/othChip"
+                app:layout_constraintEnd_toStartOf="@+id/salTxt"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/salTxt"
+                android:layout_width="80dp"
+                android:layout_height="20dp"
+                android:layout_marginTop="11dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="16dp"
+                android:fontFamily="@font/nunito"
+                android:text="Stipendio"
+                android:textColor="@color/apptext"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toTopOf="@+id/othTxt"
+                app:layout_constraintEnd_toStartOf="@+id/necChip"
+                app:layout_constraintStart_toEndOf="@+id/salChip4"
+                app:layout_constraintTop_toBottomOf="@+id/subTxt" />
+
+            <Switch
+                android:id="@+id/unnChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_marginBottom="9dp"
+                android:thumbTint="@color/buttondefault"
+                android:trackTint="@android:color/darker_gray"
+                app:layout_constraintBottom_toTopOf="@+id/extChip"
+                app:layout_constraintEnd_toStartOf="@+id/unnTxt" />
+
+            <TextView
+                android:id="@+id/unnTxt"
+                android:layout_width="62dp"
+                android:layout_height="16dp"
+                android:layout_marginEnd="37dp"
+                android:layout_marginBottom="22dp"
+                android:fontFamily="@font/nunito"
+                android:text="Superflua"
+                android:textColor="@color/apptext"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toTopOf="@+id/extTxt"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <TextView
+                android:id="@+id/extTxt"
+                android:layout_width="52dp"
+                android:layout_height="21dp"
+                android:layout_marginEnd="47dp"
+                android:layout_marginBottom="6dp"
+                android:fontFamily="@font/nunito"
+                android:text="Extra"
+                android:textColor="@color/apptext"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <Switch
+                android:id="@+id/extChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="152dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginBottom="6dp"
+                android:thumbTint="@color/buttondefault"
+                android:trackTint="@android:color/darker_gray"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/extTxt"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <Switch
+                android:id="@+id/othChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="42dp"
+                android:thumbTint="@color/buttondefault"
+                android:trackTint="@android:color/darker_gray"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/othTxt"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/othTxt"
+                android:layout_width="59dp"
+                android:layout_height="16dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginBottom="49dp"
+                android:fontFamily="@font/nunito"
+                android:text="Altro"
+                android:textColor="@color/apptext"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/unnChip" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageButton
+        android:id="@+id/searchBtn"
+        android:layout_width="67dp"
+        android:layout_height="71dp"
+        android:layout_marginStart="172dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="172dp"
+        android:background="?attr/selectableItemBackground"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/trsearch" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="2dp"> <!-- Ridotto il padding generale -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="2dp"> <!-- Ridotto il padding del contenitore -->
+
+        <!-- Riga superiore con 3 colonne -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/day"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/nunito"
+                android:gravity="center"
+                android:padding="2dp"
+            android:text="Day"
+            android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/subtype"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/nunito"
+                android:gravity="center"
+                android:padding="2dp"
+            android:text="Subtype"
+            android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/value"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/nunito"
+                android:gravity="center"
+                android:padding="2dp"
+            android:text="Value"
+            android:textSize="12sp" />
+        </LinearLayout>
+
+        <!-- Riga inferiore con Descrizione e desc sulla stessa linea -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="2dp"> <!-- Ridotto il padding superiore -->
+
+            <TextView
+                android:id="@+id/descr_label"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/nunito"
+                android:gravity="center"
+                android:padding="2dp"
+            android:text="Descrizione:"
+            android:textColor="#444444"
+            android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/desc"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:fontFamily="@font/nunito"
+                android:gravity="center"
+                android:padding="2dp"
+            android:text="Description"
+            android:textSize="12sp" />
+        </LinearLayout>
+    </LinearLayout>
+</TableRow>
