@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.example.provajava.R;
+import com.example.provajava.gui.Notice;
 import com.example.provajava.datamodel.TTransaction;
 import com.example.provajava.dbmanager.DatabaseAccess;
 import com.example.provajava.enumerator.eTranSubType;
@@ -173,6 +173,6 @@ public class TransactionFilterFragment extends Fragment implements iFragmentMana
     }
 
     private void toast(String msg) {
-        Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+        Notice.error(getActivity(), msg);
     }
 }

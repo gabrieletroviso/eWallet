@@ -3,7 +3,6 @@ package com.example.provajava.gui.activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +12,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.provajava.R;
+import com.example.provajava.gui.Notice;
 import com.example.provajava.datamodel.TMonth;
 import com.example.provajava.datamodel.TTransaction;
 import com.example.provajava.dbmanager.DatabaseAccess;
@@ -104,8 +104,7 @@ public class TodayActivityPage extends AppCompatActivity implements iActivityMan
                 return;
             }
         }
-        Toast.makeText(this, direction < 0 ? "Nessun mese precedente" : "Nessun mese successivo",
-                Toast.LENGTH_SHORT).show();
+        Notice.info(this, direction < 0 ? "Nessun mese precedente con movimenti" : "Nessun mese successivo con movimenti");
     }
 
     // Tabs Riepilogo / Movimenti, kept in sync with the pager (tap or swipe)

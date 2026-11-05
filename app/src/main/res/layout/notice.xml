@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Messaggio breve dell'app (errore / conferma / avviso), mostrato da Notice dentro una Snackbar -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_notice"
+    android:elevation="6dp"
+    android:gravity="center_vertical"
+    android:minHeight="56dp"
+    android:orientation="horizontal"
+    android:paddingStart="12dp"
+    android:paddingTop="10dp"
+    android:paddingEnd="16dp"
+    android:paddingBottom="10dp">
+
+    <ImageView
+        android:id="@+id/noticeIcon"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:background="@drawable/bg_icon_tile"
+        android:importantForAccessibility="no"
+        android:padding="7dp"
+        android:src="@drawable/ic_notice_info" />
+
+    <TextView
+        android:id="@+id/noticeText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_weight="1"
+        android:fontFamily="@font/nunito"
+        android:maxLines="4"
+        android:textColor="@color/ew_text"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+</LinearLayout>

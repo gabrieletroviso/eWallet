@@ -1,6 +1,5 @@
 package com.example.provajava.gui.fragment;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -12,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -24,6 +22,8 @@ import androidx.fragment.app.Fragment;
 
 import com.example.provajava.DatabaseHelper;
 import com.example.provajava.R;
+import com.example.provajava.gui.ConfirmDialog;
+import com.example.provajava.gui.Notice;
 import com.example.provajava.datamodel.TTransaction;
 import com.example.provajava.gui.activity.MainActivity;
 import com.example.provajava.gui.activity.ToolActivityPage;
@@ -106,22 +106,21 @@ public class ToolFragment extends Fragment implements iFragmentManaged {
         Button save = view.findViewById(R.id.saveDbBtn);
         Button restore = view.findViewById(R.id.restDbBtn);
 
-        clear.setOnClickListener(v -> new AlertDialog.Builder(getActivity())
-                .setTitle("Cancellare tutti i dati?")
-                .setMessage("Tutti i movimenti salvati sul telefono verranno eliminati. "
-                        + "L'operazione non si può annullare: se non l'hai già fatto, salva prima un backup su Drive.")
-                .setPositiveButton("Cancella", (dialog, which) -> {
+        clear.setOnClickListener(v -> ConfirmDialog.destructive(requireContext(), R.drawable.ic_trash,
+                "Cancellare tutti i dati?",
+                "Tutti i movimenti salvati sul telefono verranno eliminati. "
+                        + "L'operazione non si può annullare: se non l'hai già fatto, salva prima un backup su Drive.",
+                "Cancella",
+                () -> {
                     clearDB();
-                    Toast.makeText(getContext(), "Dati cancellati", Toast.LENGTH_SHORT).show();
-                })
-                .setNegativeButton("Annulla", null)
-                .show());
+                    Notice.success(getActivity(), "Dati cancellati");
+                }));
         save.setOnClickListener(v -> createDBBackup());
-        restore.setOnClickListener(v -> new AlertDialog.Builder(getActivity())
-                .setMessage("Il database attuale verrà sostituito con il backup scelto e l'app verrà riavviata. Continuare?")
-                .setPositiveButton("Sì", (dialog, which) -> importLauncher.launch(new String[]{"*/*"}))
-                .setNegativeButton("No", null)
-                .show());
+        restore.setOnClickListener(v -> ConfirmDialog.normal(requireContext(), R.drawable.ic_restore,
+                "Ripristinare un backup?",
+                "Il database attuale verrà sostituito con il backup che scegli e l'app verrà riavviata.",
+                "Scegli backup",
+                () -> importLauncher.launch(new String[]{"*/*"})));
     }
 
     private void populateView(){
@@ -155,12 +154,12 @@ public class ToolFragment extends Fragment implements iFragmentManaged {
             try {
                 dbahelper.exportDatabase(uri);
                 runOnUi(() -> {
-                    Toast.makeText(app, "Backup salvato", Toast.LENGTH_SHORT).show();
+                    Notice.success(getActivity(), "Backup salvato");
                     populateView();
                 });
             } catch (Exception e) {
                 Log.e(TAG, "Export failed", e);
-                runOnUi(() -> Toast.makeText(app, "Backup non riuscito: " + e.getMessage(), Toast.LENGTH_LONG).show());
+                runOnUi(() -> Notice.error(getActivity(), "Backup non riuscito: " + e.getMessage()));
             }
         });
     }
@@ -174,12 +173,13 @@ public class ToolFragment extends Fragment implements iFragmentManaged {
             try {
                 dbahelper.importDatabase(uri);
                 runOnUi(() -> {
-                    Toast.makeText(app, "Backup ripristinato, riavvio...", Toast.LENGTH_SHORT).show();
-                    restartApp(app);
+                    // Leave the message on screen for a moment before restarting
+                    Notice.success(getActivity(), "Backup ripristinato, riavvio...");
+                    view.postDelayed(() -> restartApp(app), 1200);
                 });
             } catch (Exception e) {
                 Log.e(TAG, "Import failed", e);
-                runOnUi(() -> Toast.makeText(app, "Ripristino non riuscito: " + e.getMessage(), Toast.LENGTH_LONG).show());
+                runOnUi(() -> Notice.error(getActivity(), "Ripristino non riuscito: " + e.getMessage()));
             }
         });
     }

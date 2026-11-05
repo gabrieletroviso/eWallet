@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
@@ -17,6 +16,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.widget.ImageViewCompat;
 
 import com.example.provajava.R;
+import com.example.provajava.gui.Notice;
 import com.example.provajava.datamodel.TMonth;
 import com.example.provajava.datamodel.TTransaction;
 import com.example.provajava.datamodel.TYear;
@@ -212,7 +212,7 @@ public class TransactionDialog extends ManagedDialog {
         }
         amountLayout.setError(null);
         if (eTranSubType.NONE.equals(type)) {
-            Toast.makeText(getActivity(), "Scegli una categoria", Toast.LENGTH_SHORT).show();
+            Notice.error(root, "Scegli una categoria");
             return;
         }
 

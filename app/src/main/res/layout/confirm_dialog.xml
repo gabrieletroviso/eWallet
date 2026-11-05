@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Finestra di conferma dell'app (ConfirmDialog): icona, titolo, messaggio, Annulla / conferma -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_dialog"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <ImageView
+        android:id="@+id/confirmIcon"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/bg_icon_tile"
+        android:importantForAccessibility="no"
+        android:padding="12dp"
+        android:src="@drawable/ic_trash" />
+
+    <TextView
+        android:id="@+id/confirmTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/nunito_extrabold"
+        android:textColor="@color/ew_text"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/confirmMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/nunito_semibold"
+        android:lineSpacingExtra="2dp"
+        android:textColor="@color/ew_text_secondary"
+        android:textSize="15sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:orientation="horizontal">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/confirmCancel"
+            android:maxLines="1"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            app:autoSizeMaxTextSize="15sp"
+            app:autoSizeMinTextSize="12sp"
+            app:autoSizeTextType="uniform"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:layout_marginEnd="6dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/nunito_extrabold"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="Annulla"
+            android:textAllCaps="false"
+            android:textColor="@color/ew_text"
+            android:textSize="15sp"
+            app:cornerRadius="16dp"
+            app:strokeColor="@color/ew_outline"
+            app:strokeWidth="1.5dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/confirmOk"
+            android:maxLines="1"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            app:autoSizeMaxTextSize="15sp"
+            app:autoSizeMinTextSize="12sp"
+            app:autoSizeTextType="uniform"
+            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:layout_marginStart="6dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/nunito_extrabold"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            app:backgroundTint="@color/ew_primary"
+            app:cornerRadius="16dp" />
+    </LinearLayout>
+
+</LinearLayout>

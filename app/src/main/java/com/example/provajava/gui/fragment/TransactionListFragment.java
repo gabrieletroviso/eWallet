@@ -17,6 +17,8 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.example.provajava.R;
+import com.example.provajava.gui.Notice;
+import com.example.provajava.gui.ConfirmDialog;
 import com.example.provajava.Tools;
 import com.example.provajava.datamodel.TMonth;
 import com.example.provajava.datamodel.TTransaction;
@@ -29,7 +31,6 @@ import com.example.provajava.gui.activity.TodayActivityPage;
 import com.example.provajava.gui.fragment.dialog.TransactionDialog;
 import com.example.provajava.gui.fragment.interfaces.iFragmentManaged;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -143,17 +144,18 @@ public class TransactionListFragment extends Fragment implements iFragmentManage
         });
 
         content.findViewById(R.id.deleteBtn).setOnClickListener(v ->
-                new MaterialAlertDialogBuilder(requireContext())
-                        .setTitle("Eliminare il movimento?")
-                        .setMessage(trns.getTranSubType() + " di " + Tools.formatEuro(trns.getAmount())
-                                + " del " + date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + ".")
-                        .setNegativeButton("Annulla", null)
-                        .setPositiveButton("Elimina", (d, w) -> {
+                ConfirmDialog.destructive(requireContext(), R.drawable.ic_trash,
+                        "Eliminare il movimento?",
+                        trns.getTranSubType() + " di " + Tools.formatEuro(trns.getAmount())
+                                + " del " + date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+                                + ". L'operazione non si può annullare.",
+                        "Elimina",
+                        () -> {
                             dba.deleteTransaction(trns);
                             sheet.dismiss();
                             listner.onNewTransaction(null);
-                        })
-                        .show());
+                            Notice.success(getActivity(), "Movimento eliminato");
+                        }));
 
         sheet.show();
     }
