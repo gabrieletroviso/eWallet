@@ -46,23 +46,11 @@
     <color name="ew_cat_altro">#8BCFAA</color>
 
     <!-- ============ Nomi storici, rimappati sulla nuova palette ============ -->
-    <!-- Restano finché le schermate non vengono ridisegnate una per una. -->
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
+    <!-- Usati ancora dalle finestre non ridisegnate (aggiunta/modifica movimento, selettori). -->
     <color name="white">#FFFFFFFF</color>
-    <color name="appbackground">@color/ew_background</color>
     <color name="apptext">@color/ew_text</color>
     <color name="dark_green">@color/ew_income</color>
     <color name="dark_red">@color/ew_expense</color>
     <color name="buttondefault">@color/ew_track</color>
     <color name="trackdefault">@color/ew_outline</color>
-    <color name="pastelblu">@color/ew_cat_necessaria</color>
-    <color name="pastelpink">@color/ew_cat_extra</color>
-    <color name="pastelgreen">@color/ew_cat_superflua</color>
-    <color name="pastelsalary">@color/ew_cat_stipendio</color>
-    <color name="trade">@color/ew_primary</color>
 </resources>
