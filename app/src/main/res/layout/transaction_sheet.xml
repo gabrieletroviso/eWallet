@@ -42,14 +42,15 @@
             android:orientation="vertical">
 
             <TextView
+                android:fontFamily="@font/nunito_extrabold"
                 android:id="@+id/sheetCategory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/ew_text"
-                android:textSize="17sp"
-                android:textStyle="bold" />
+                android:textSize="17sp" />
 
             <TextView
+                android:fontFamily="@font/nunito_semibold"
                 android:id="@+id/sheetDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -58,13 +59,13 @@
         </LinearLayout>
 
         <TextView
+            android:fontFamily="@font/nunito_extrabold"
             android:id="@+id/sheetAmount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFeatureSettings="tnum"
             android:textColor="@color/ew_text"
-            android:textSize="22sp"
-            android:textStyle="bold" />
+            android:textSize="22sp" />
     </LinearLayout>
 
     <!-- Descrizione -->
@@ -96,6 +97,7 @@
         android:orientation="horizontal">
 
         <com.google.android.material.button.MaterialButton
+            android:fontFamily="@font/nunito_extrabold"
             android:id="@+id/deleteBtn"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="0dp"
@@ -108,7 +110,6 @@
             android:textAllCaps="false"
             android:textColor="@color/ew_expense"
             android:textSize="15sp"
-            android:textStyle="bold"
             app:cornerRadius="16dp"
             app:icon="@drawable/delete"
             app:iconGravity="textStart"
@@ -119,6 +120,7 @@
             app:strokeWidth="1.5dp" />
 
         <com.google.android.material.button.MaterialButton
+            android:fontFamily="@font/nunito_extrabold"
             android:id="@+id/editBtn"
             style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
             android:layout_width="0dp"
@@ -131,7 +133,6 @@
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="15sp"
-            android:textStyle="bold"
             app:backgroundTint="@color/ew_primary"
             app:cornerRadius="16dp"
             app:icon="@drawable/edit"

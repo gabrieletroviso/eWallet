@@ -43,12 +43,12 @@
             android:textStyle="bold" />
 
         <TextView
+            android:fontFamily="@font/nunito_extrabold"
             android:id="@+id/periodTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/ew_text"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            android:textSize="24sp" />
     </LinearLayout>
 
     <ImageButton

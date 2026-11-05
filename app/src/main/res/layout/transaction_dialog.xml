@@ -29,14 +29,14 @@
                 android:src="@drawable/ic_arrow_in" />
 
             <TextView
+                android:fontFamily="@font/nunito_extrabold"
                 android:id="@+id/dialogTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:text="Nuova entrata"
                 android:textColor="@color/ew_text"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textSize="20sp" />
         </LinearLayout>
 
         <!-- Importo -->
@@ -51,14 +51,14 @@
             app:suffixText="€">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:fontFamily="@font/nunito_extrabold"
                 android:id="@+id/amountValue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="numberDecimal"
                 android:maxLines="1"
                 android:textColor="@color/ew_text"
-                android:textSize="22sp"
-                android:textStyle="bold" />
+                android:textSize="22sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Data -->
@@ -74,6 +74,7 @@
             app:endIconTint="@color/ew_text_secondary">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:fontFamily="@font/nunito_extrabold"
                 android:id="@+id/dateValue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -82,8 +83,7 @@
                 android:inputType="none"
                 android:maxLines="1"
                 android:textColor="@color/ew_text"
-                android:textSize="15sp"
-                android:textStyle="bold" />
+                android:textSize="15sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Categoria -->
@@ -137,6 +137,7 @@
             android:orientation="horizontal">
 
             <com.google.android.material.button.MaterialButton
+                android:fontFamily="@font/nunito_extrabold"
                 android:id="@+id/cancelBtn"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="0dp"
@@ -149,12 +150,12 @@
                 android:textAllCaps="false"
                 android:textColor="@color/ew_text"
                 android:textSize="15sp"
-                android:textStyle="bold"
                 app:cornerRadius="16dp"
                 app:strokeColor="@color/ew_outline"
                 app:strokeWidth="1.5dp" />
 
             <com.google.android.material.button.MaterialButton
+                android:fontFamily="@font/nunito_extrabold"
                 android:id="@+id/saveBtn"
                 style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
                 android:layout_width="0dp"
@@ -167,7 +168,6 @@
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="15sp"
-                android:textStyle="bold"
                 app:backgroundTint="@color/ew_income"
                 app:cornerRadius="16dp" />
         </LinearLayout>

@@ -46,6 +46,7 @@
         <item name="android:maxLines">1</item>
         <item name="android:textColor">@color/ew_text_secondary</item>
         <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <!-- Campo di testo con etichetta sul bordo (Ricerca) -->
@@ -72,7 +73,9 @@
         <item name="chipMinHeight">40dp</item>
         <item name="android:textColor">@color/chip_text</item>
         <item name="android:textSize">14sp</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">@font/nunito_extrabold</item>
+        <item name="fontFamily">@font/nunito_extrabold</item>
+        <item name="android:textAppearance">@style/TextAppearance.eWallet.Chip</item>
         <item name="checkedIconTint">@color/ew_primary_dark</item>
         <item name="rippleColor">@color/ew_primary_container</item>
     </style>
@@ -93,6 +96,14 @@
         <item name="cornerSizeTopRight">28dp</item>
         <item name="cornerSizeBottomLeft">0dp</item>
         <item name="cornerSizeBottomRight">0dp</item>
+    </style>
+
+    <!-- Testo dei chip: Nunito 800 (il chip lo legge dalla textAppearance) -->
+    <style name="TextAppearance.eWallet.Chip" parent="TextAppearance.MaterialComponents.Chip">
+        <item name="fontFamily">@font/nunito_extrabold</item>
+        <item name="android:fontFamily">@font/nunito_extrabold</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/chip_text</item>
     </style>
 
     <!-- ===================== Barra di navigazione in basso ===================== -->
@@ -128,11 +139,14 @@
         <item name="fontFamily">@font/nunito</item>
         <item name="android:fontFamily">@font/nunito</item>
         <item name="android:textSize">12sp</item>
-        <item name="android:textStyle">normal</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
+    <!-- Voce attiva: Nunito 800 -->
     <style name="TextAppearance.eWallet.NavLabel.Active">
-        <item name="android:textStyle">bold</item>
+        <item name="fontFamily">@font/nunito_extrabold</item>
+        <item name="android:fontFamily">@font/nunito_extrabold</item>
+        <item name="android:textStyle">normal</item>
     </style>
 
     <style name="MaterialCalendarTheme" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">

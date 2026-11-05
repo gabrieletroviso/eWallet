@@ -23,15 +23,16 @@
             android:padding="20dp">
 
             <TextView
+                android:fontFamily="@font/nunito_extrabold"
                 android:id="@+id/pieHead"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Ripartizione spese"
                 android:textColor="@color/ew_text"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textSize="16sp" />
 
             <TextView
+                android:fontFamily="@font/nunito_semibold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Percentuale sul totale dell'anno"
@@ -65,14 +66,14 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:fontFamily="@font/nunito_extrabold"
                         android:id="@+id/centerValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFeatureSettings="tnum"
                         android:letterSpacing="-0.01"
                         android:textColor="@color/ew_text"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
+                        android:textSize="24sp" />
 
                     <TextView
                         android:id="@+id/centerPercent"
@@ -96,6 +97,7 @@
             android:paddingBottom="6dp" />
 
         <TextView
+            android:fontFamily="@font/nunito_semibold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"

@@ -23,6 +23,7 @@
     </ScrollView>
 
     <TextView
+        android:fontFamily="@font/nunito_extrabold"
         android:id="@+id/emptyText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -30,7 +31,6 @@
         android:text="Nessun movimento in questo mese"
         android:textColor="@color/ew_text_secondary"
         android:textSize="15sp"
-        android:textStyle="bold"
         android:visibility="gone" />
 
 </FrameLayout>

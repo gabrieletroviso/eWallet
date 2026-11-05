@@ -12,9 +12,10 @@
     <color name="ew_text_secondary">#5B6172</color>
 
     <!-- Brand -->
-    <color name="ew_primary">#4338CA</color>
-    <color name="ew_primary_dark">#2A1F9C</color>
-    <color name="ew_primary_container">#E6E4FB</color>
+    <!-- Blu (una delle varianti del design) al posto dell'indaco #4338CA, più azzurro e meno viola -->
+    <color name="ew_primary">#1F5FBF</color>
+    <color name="ew_primary_dark">#174A94</color>
+    <color name="ew_primary_container">#E1ECFA</color>
 
     <!-- Entrate / uscite -->
     <color name="ew_income">#127A4B</color>

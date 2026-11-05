@@ -20,15 +20,16 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
+            android:fontFamily="@font/nunito_extrabold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:letterSpacing="-0.01"
             android:text="Cerca movimenti"
             android:textColor="@color/ew_text"
-            android:textSize="26sp"
-            android:textStyle="bold" />
+            android:textSize="26sp" />
 
         <TextView
+            android:fontFamily="@font/nunito_semibold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Filtra per periodo, importo e tipo"

@@ -17,6 +17,7 @@
 
         <!-- Titolo -->
         <TextView
+            android:fontFamily="@font/nunito_extrabold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
@@ -24,8 +25,7 @@
             android:letterSpacing="-0.01"
             android:text="Impostazioni"
             android:textColor="@color/ew_text"
-            android:textSize="26sp"
-            android:textStyle="bold" />
+            android:textSize="26sp" />
 
         <!-- ===== Backup su Google Drive ===== -->
         <TextView
@@ -69,14 +69,15 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:fontFamily="@font/nunito_extrabold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Google Drive"
                         android:textColor="@color/ew_text"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:textSize="16sp" />
 
                     <TextView
+                        android:fontFamily="@font/nunito_semibold"
                         android:id="@+id/restData"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -86,6 +87,7 @@
             </LinearLayout>
 
             <TextView
+                android:fontFamily="@font/nunito_semibold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
@@ -100,6 +102,7 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.button.MaterialButton
+                    android:fontFamily="@font/nunito_extrabold"
                     android:id="@+id/restDbBtn"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="0dp"
@@ -112,12 +115,12 @@
                     android:textAllCaps="false"
                     android:textColor="@color/ew_text"
                     android:textSize="15sp"
-                    android:textStyle="bold"
                     app:cornerRadius="16dp"
                     app:strokeColor="@color/ew_outline"
                     app:strokeWidth="1.5dp" />
 
                 <com.google.android.material.button.MaterialButton
+                    android:fontFamily="@font/nunito_extrabold"
                     android:id="@+id/saveDbBtn"
                     style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
                     android:layout_width="0dp"
@@ -130,7 +133,6 @@
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textSize="15sp"
-                    android:textStyle="bold"
                     app:backgroundTint="@color/ew_primary"
                     app:cornerRadius="16dp" />
             </LinearLayout>
@@ -156,14 +158,15 @@
             android:padding="18dp">
 
             <TextView
+                android:fontFamily="@font/nunito_extrabold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Cancella tutti i dati"
                 android:textColor="@color/ew_text"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textSize="16sp" />
 
             <TextView
+                android:fontFamily="@font/nunito_semibold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -172,6 +175,7 @@
                 android:textSize="13sp" />
 
             <com.google.android.material.button.MaterialButton
+                android:fontFamily="@font/nunito_extrabold"
                 android:id="@+id/clearBtn"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="match_parent"
@@ -183,7 +187,6 @@
                 android:textAllCaps="false"
                 android:textColor="@color/ew_expense"
                 android:textSize="15sp"
-                android:textStyle="bold"
                 app:cornerRadius="16dp"
                 app:rippleColor="@color/ew_expense_container"
                 app:strokeColor="@color/ew_expense"
@@ -192,6 +195,7 @@
 
         <!-- Versione -->
         <TextView
+            android:fontFamily="@font/nunito_semibold"
             android:id="@+id/versionText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

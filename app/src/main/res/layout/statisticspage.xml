@@ -34,7 +34,7 @@
         <TextView
             android:id="@+id/tabTrend"
             style="@style/Widget.eWallet.PillTab"
-            android:text="Andamento" />
+            android:text="Trend" />
 
         <Space
             android:layout_width="4dp"

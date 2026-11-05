@@ -31,12 +31,12 @@
                 android:padding="18dp">
 
                 <TextView
+                    android:fontFamily="@font/nunito_extrabold"
                     android:id="@+id/resultsCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/ew_text"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textSize="16sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -59,13 +59,13 @@
                             android:textStyle="bold" />
 
                         <TextView
+                            android:fontFamily="@font/nunito_extrabold"
                             android:id="@+id/resultsIncome"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFeatureSettings="tnum"
                             android:textColor="@color/ew_income"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
+                            android:textSize="15sp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -83,13 +83,13 @@
                             android:textStyle="bold" />
 
                         <TextView
+                            android:fontFamily="@font/nunito_extrabold"
                             android:id="@+id/resultsExpense"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFeatureSettings="tnum"
                             android:textColor="@color/ew_text"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
+                            android:textSize="15sp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -107,13 +107,13 @@
                             android:textStyle="bold" />
 
                         <TextView
+                            android:fontFamily="@font/nunito_extrabold"
                             android:id="@+id/resultsBalance"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFeatureSettings="tnum"
                             android:textColor="@color/ew_text"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
+                            android:textSize="15sp" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -128,6 +128,7 @@
 
     <!-- Nessuna ricerca ancora fatta, o nessun risultato -->
     <TextView
+        android:fontFamily="@font/nunito_extrabold"
         android:id="@+id/resultsEmpty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -137,7 +138,6 @@
         android:paddingEnd="32dp"
         android:text="Imposta i filtri e premi Cerca"
         android:textColor="@color/ew_text_secondary"
-        android:textSize="15sp"
-        android:textStyle="bold" />
+        android:textSize="15sp" />
 
 </FrameLayout>

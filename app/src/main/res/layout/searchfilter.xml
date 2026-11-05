@@ -55,6 +55,7 @@
                         app:endIconTint="@color/ew_text_secondary">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:fontFamily="@font/nunito_extrabold"
                             android:id="@+id/fromBtn"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -63,8 +64,7 @@
                             android:cursorVisible="false"
                             android:inputType="none"
                             android:textColor="@color/ew_text"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
+                            android:textSize="15sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <Space
@@ -83,6 +83,7 @@
                         app:endIconTint="@color/ew_text_secondary">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:fontFamily="@font/nunito_extrabold"
                             android:id="@+id/toBtn"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -91,8 +92,7 @@
                             android:cursorVisible="false"
                             android:inputType="none"
                             android:textColor="@color/ew_text"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
+                            android:textSize="15sp" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
                 <TextView
@@ -120,14 +120,14 @@
                         app:placeholderText="0,00">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:fontFamily="@font/nunito_extrabold"
                             android:id="@+id/moreVal"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:maxLines="1"
                             android:inputType="numberDecimal"
                             android:textColor="@color/ew_text"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
+                            android:textSize="15sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <Space
@@ -145,14 +145,14 @@
                         app:placeholderText="0,00">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:fontFamily="@font/nunito_extrabold"
                             android:id="@+id/lessVal"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:maxLines="1"
                             android:inputType="numberDecimal"
                             android:textColor="@color/ew_text"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
+                            android:textSize="15sp" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
                 <com.google.android.material.textfield.TextInputLayout
@@ -167,14 +167,14 @@
                     app:placeholderText="Es. spesa, bolletta…">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:fontFamily="@font/nunito_extrabold"
                         android:id="@+id/descVal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:maxLines="1"
                         android:inputType="text"
                         android:textColor="@color/ew_text"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
+                        android:textSize="15sp" />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
@@ -265,6 +265,7 @@
         android:paddingBottom="16dp">
 
         <com.google.android.material.button.MaterialButton
+            android:fontFamily="@font/nunito_extrabold"
             android:id="@+id/resetBtn"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="0dp"
@@ -277,12 +278,12 @@
             android:textAllCaps="false"
             android:textColor="@color/ew_text"
             android:textSize="15sp"
-            android:textStyle="bold"
             app:cornerRadius="16dp"
             app:strokeColor="@color/ew_outline"
             app:strokeWidth="1.5dp" />
 
         <com.google.android.material.button.MaterialButton
+            android:fontFamily="@font/nunito_extrabold"
             android:id="@+id/searchBtn"
             style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
             android:layout_width="0dp"
@@ -295,7 +296,6 @@
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="15sp"
-            android:textStyle="bold"
             app:backgroundTint="@color/ew_primary"
             app:cornerRadius="16dp"
             app:icon="@drawable/ic_nav_search"

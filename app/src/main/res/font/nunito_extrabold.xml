@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Nunito 800 (ExtraBold): titoli, importi, pulsanti -->
+<font-family xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <font
+        android:font="@font/nunito_variable"
+        android:fontStyle="normal"
+        android:fontWeight="800"
+        android:fontVariationSettings="'wght' 800"
+        app:font="@font/nunito_variable"
+        app:fontStyle="normal"
+        app:fontWeight="800"
+        app:fontVariationSettings="'wght' 800" />
+</font-family>

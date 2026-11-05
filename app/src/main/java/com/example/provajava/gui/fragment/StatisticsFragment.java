@@ -258,7 +258,7 @@ public class StatisticsFragment extends Fragment implements iFragmentManaged {
     // Common look of both charts: no zoom/drag (so the pager can still swipe), month initials
     // on the x axis, a few light dashed lines and compact amounts on the right
     private void styleChart(BarLineChartBase<?> chart){
-        Typeface font = ResourcesCompat.getFont(requireContext(), R.font.nunito);
+        Typeface font = Typeface.create(ResourcesCompat.getFont(requireContext(), R.font.nunito), Typeface.BOLD);
         int secondary = color(R.color.ew_text_secondary);
 
         chart.getDescription().setEnabled(false);

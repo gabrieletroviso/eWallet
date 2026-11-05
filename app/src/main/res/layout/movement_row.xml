@@ -32,15 +32,16 @@
         android:orientation="vertical">
 
         <TextView
+            android:fontFamily="@font/nunito_extrabold"
             android:id="@+id/rowCategory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Necessaria"
             android:textColor="@color/ew_text"
-            android:textSize="15sp"
-            android:textStyle="bold" />
+            android:textSize="15sp" />
 
         <TextView
+            android:fontFamily="@font/nunito_semibold"
             android:id="@+id/rowDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -52,13 +53,13 @@
     </LinearLayout>
 
     <TextView
+        android:fontFamily="@font/nunito_extrabold"
         android:id="@+id/rowAmount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFeatureSettings="tnum"
         android:text="0,00 €"
         android:textColor="@color/ew_text"
-        android:textSize="15sp"
-        android:textStyle="bold" />
+        android:textSize="15sp" />
 
 </LinearLayout>

@@ -245,14 +245,15 @@ public abstract class APieChartsFragment extends Fragment implements iFragmentMa
         pct.setText(percent(s.value) + "%");
         pct.setTextColor(color(s.accent));
 
-        Typeface font = ResourcesCompat.getFont(requireContext(), R.font.nunito);
+        Typeface bold = Typeface.create(ResourcesCompat.getFont(requireContext(), R.font.nunito), Typeface.BOLD);
+        Typeface extraBold = ResourcesCompat.getFont(requireContext(), R.font.nunito_extrabold);
         LinearLayout rows = view.findViewById(R.id.legendRows);
         for (int i = 0; i < rows.getChildCount(); i++) {
             View row = rows.getChildAt(i);
             boolean on = i == selected;
             row.setBackgroundColor(on ? color(slices.get(i).container) : Color.TRANSPARENT);
             ((TextView) row.findViewById(R.id.legendName))
-                    .setTypeface(font, on ? Typeface.BOLD : Typeface.NORMAL);
+                    .setTypeface(on ? extraBold : bold);
         }
     }
 

@@ -66,6 +66,7 @@
         </LinearLayout>
 
         <TextView
+            android:fontFamily="@font/nunito_extrabold"
             android:id="@+id/balValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -74,8 +75,7 @@
             android:letterSpacing="-0.02"
             android:text="0,00 €"
             android:textColor="@color/white"
-            android:textSize="44sp"
-            android:textStyle="bold" />
+            android:textSize="44sp" />
     </LinearLayout>
 
     <!-- Entrate / Uscite -->
@@ -113,14 +113,14 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:fontFamily="@font/nunito_extrabold"
                 android:id="@+id/incValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFeatureSettings="tnum"
                 android:text="0,00 €"
                 android:textColor="@color/ew_text"
-                android:textSize="22sp"
-                android:textStyle="bold" />
+                android:textSize="22sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -151,14 +151,14 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:fontFamily="@font/nunito_extrabold"
                 android:id="@+id/expValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFeatureSettings="tnum"
                 android:text="0,00 €"
                 android:textColor="@color/ew_text"
-                android:textSize="22sp"
-                android:textStyle="bold" />
+                android:textSize="22sp" />
         </LinearLayout>
     </LinearLayout>
 
@@ -184,6 +184,7 @@
         android:orientation="horizontal">
 
         <com.google.android.material.button.MaterialButton
+            android:fontFamily="@font/nunito_extrabold"
             android:id="@+id/addBtn"
             style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
             android:layout_width="0dp"
@@ -196,7 +197,6 @@
             android:textAllCaps="false"
             android:textColor="@color/ew_on_income_container"
             android:textSize="16sp"
-            android:textStyle="bold"
             app:backgroundTint="@color/ew_income_container"
             app:cornerRadius="18dp"
             app:icon="@drawable/ic_plus"
@@ -205,6 +205,7 @@
             app:iconTint="@color/ew_on_income_container" />
 
         <com.google.android.material.button.MaterialButton
+            android:fontFamily="@font/nunito_extrabold"
             android:id="@+id/expBtn"
             style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
             android:layout_width="0dp"
@@ -217,7 +218,6 @@
             android:textAllCaps="false"
             android:textColor="@color/ew_on_expense_container"
             android:textSize="16sp"
-            android:textStyle="bold"
             app:backgroundTint="@color/ew_expense_container"
             app:cornerRadius="18dp"
             app:icon="@drawable/ic_minus"

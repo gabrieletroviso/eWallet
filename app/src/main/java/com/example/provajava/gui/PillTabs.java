@@ -38,8 +38,10 @@ public final class PillTabs {
         tab.setElevation(selected ? tab.getResources().getDisplayMetrics().density : 0);
         tab.setTextColor(ContextCompat.getColor(tab.getContext(),
                 selected ? R.color.ew_text : R.color.ew_text_secondary));
-        tab.setTypeface(ResourcesCompat.getFont(tab.getContext(), R.font.nunito),
-                selected ? Typeface.BOLD : Typeface.NORMAL);
+        // Design: selected tab Nunito 800, the others 700
+        tab.setTypeface(selected
+                ? ResourcesCompat.getFont(tab.getContext(), R.font.nunito_extrabold)
+                : Typeface.create(ResourcesCompat.getFont(tab.getContext(), R.font.nunito), Typeface.BOLD));
         tab.setSelected(selected);
     }
 }

@@ -38,14 +38,15 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:fontFamily="@font/nunito_extrabold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Bilancio mensile"
                         android:textColor="@color/ew_text"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:textSize="16sp" />
 
                     <TextView
+                        android:fontFamily="@font/nunito_semibold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Entrate meno uscite"
@@ -68,13 +69,13 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:fontFamily="@font/nunito_extrabold"
                         android:id="@+id/balMonthValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFeatureSettings="tnum"
                         android:textColor="@color/ew_text"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:textSize="16sp" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -148,14 +149,15 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:fontFamily="@font/nunito_extrabold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Saldo progressivo"
                         android:textColor="@color/ew_text"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:textSize="16sp" />
 
                     <TextView
+                        android:fontFamily="@font/nunito_semibold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Somma dei bilanci"
@@ -178,13 +180,13 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:fontFamily="@font/nunito_extrabold"
                         android:id="@+id/cumMonthValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFeatureSettings="tnum"
                         android:textColor="@color/ew_text"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:textSize="16sp" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -196,6 +198,7 @@
         </LinearLayout>
 
         <TextView
+            android:fontFamily="@font/nunito_semibold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
