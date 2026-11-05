@@ -25,6 +25,7 @@ import androidx.fragment.app.Fragment;
 import com.example.provajava.DatabaseHelper;
 import com.example.provajava.R;
 import com.example.provajava.datamodel.TTransaction;
+import com.example.provajava.gui.activity.MainActivity;
 import com.example.provajava.gui.activity.ToolActivityPage;
 import com.example.provajava.gui.fragment.interfaces.iFragmentManaged;
 
@@ -105,7 +106,16 @@ public class ToolFragment extends Fragment implements iFragmentManaged {
         Button save = view.findViewById(R.id.saveDbBtn);
         Button restore = view.findViewById(R.id.restDbBtn);
 
-        clear.setOnClickListener(v -> clearDB());
+        clear.setOnClickListener(v -> new AlertDialog.Builder(getActivity())
+                .setTitle("Cancellare tutti i dati?")
+                .setMessage("Tutti i movimenti salvati sul telefono verranno eliminati. "
+                        + "L'operazione non si può annullare: se non l'hai già fatto, salva prima un backup su Drive.")
+                .setPositiveButton("Cancella", (dialog, which) -> {
+                    clearDB();
+                    Toast.makeText(getContext(), "Dati cancellati", Toast.LENGTH_SHORT).show();
+                })
+                .setNegativeButton("Annulla", null)
+                .show());
         save.setOnClickListener(v -> createDBBackup());
         restore.setOnClickListener(v -> new AlertDialog.Builder(getActivity())
                 .setMessage("Il database attuale verrà sostituito con il backup scelto e l'app verrà riavviata. Continuare?")
@@ -118,10 +128,12 @@ public class ToolFragment extends Fragment implements iFragmentManaged {
         TextView data = view.findViewById(R.id.restData);
         LocalDate lastExport = dbahelper.getLastExportDate();
         if (lastExport == null) {
-            data.setText("Nessun backup esportato");
+            data.setText("Nessun backup salvato da questo telefono");
         } else {
             data.setText("Ultimo backup: " + lastExport.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         }
+
+        ((TextView) view.findViewById(R.id.versionText)).setText("eWallet · " + MainActivity.VER);
     }
 
     private void createDBBackup(){

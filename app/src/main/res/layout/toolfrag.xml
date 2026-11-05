@@ -1,115 +1,203 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- Impostazioni: backup su Google Drive, gestione dati, informazioni sull'app -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/homeAct"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clickable="false">
+    android:clipToPadding="false"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:paddingBottom="20dp">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="205dp" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/saveDbBtn"
-            android:layout_width="130dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="140dp"
-            android:layout_marginEnd="141dp"
-            android:layout_marginBottom="18dp"
-            android:backgroundTint="@color/buttondefault"
-            android:fontFamily="@font/nunito"
-            android:text="SALVA"
-            android:textColor="@color/apptext"
-            app:layout_constraintBottom_toTopOf="@+id/clearBtn"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <Button
-            android:id="@+id/clearBtn"
-            android:layout_width="130dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="140dp"
-            android:layout_marginEnd="141dp"
-            android:layout_marginBottom="16dp"
-            android:backgroundTint="@color/buttondefault"
-            android:fontFamily="@font/nunito"
-            android:text="PULISCI"
-            android:textColor="@color/apptext"
-            app:layout_constraintBottom_toTopOf="@+id/restDbBtn"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <Button
-            android:id="@+id/restDbBtn"
-            android:layout_width="130dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="140dp"
-            android:layout_marginEnd="141dp"
-            android:backgroundTint="@color/buttondefault"
-            android:fontFamily="@font/nunito"
-            android:text="RIPRISTINA"
-            android:textColor="@color/apptext"
-            app:layout_constraintBottom_toTopOf="@+id/restData"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
+        <!-- Titolo -->
         <TextView
-            android:id="@+id/restData"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="184dp"
-            android:layout_marginEnd="184dp"
-            android:fontFamily="@font/nunito"
-            android:layout_marginTop="382dp"
-            android:text=""
-            android:textSize="10sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="28dp"
+            android:letterSpacing="-0.01"
+            android:text="Impostazioni"
+            android:textColor="@color/ew_text"
+            android:textSize="26sp"
+            android:textStyle="bold" />
 
+        <!-- ===== Backup su Google Drive ===== -->
         <TextView
-            android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="119dp"
-            android:layout_marginEnd="121dp"
-            android:layout_marginBottom="41dp"
-            android:fontFamily="@font/nunito"
-            android:text="Gestione database"
-            android:textColor="@color/apptext"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/saveDbBtn"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:text="Backup"
+            android:textColor="@color/ew_text_secondary"
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="38dp"
-            android:layout_height="38dp"
-            android:layout_marginStart="186dp"
-            android:layout_marginTop="105dp"
-            android:layout_marginEnd="187dp"
-            android:layout_marginBottom="15dp"
-            app:layout_constraintBottom_toTopOf="@+id/textView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/googledrive" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border"
+            android:orientation="vertical"
+            android:padding="18dp">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/bg_icon_tile"
+                    android:backgroundTint="@color/ew_track"
+                    android:importantForAccessibility="no"
+                    android:padding="8dp"
+                    android:src="@drawable/googledrive" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Google Drive"
+                        android:textColor="@color/ew_text"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/restData"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/ew_text_secondary"
+                        android:textSize="13sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Salva una copia del database su Drive per recuperarla se cambi telefono. Nel selettore tocca ☰ e scegli Drive."
+                android:textColor="@color/ew_text_secondary"
+                android:textSize="13sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/restDbBtn"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="52dp"
+                    android:layout_marginEnd="6dp"
+                    android:layout_weight="1"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:text="Ripristina"
+                    android:textAllCaps="false"
+                    android:textColor="@color/ew_text"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="16dp"
+                    app:strokeColor="@color/ew_outline"
+                    app:strokeWidth="1.5dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/saveDbBtn"
+                    style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="52dp"
+                    android:layout_marginStart="6dp"
+                    android:layout_weight="1"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:text="Salva"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="@color/ew_primary"
+                    app:cornerRadius="16dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- ===== Dati ===== -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="10dp"
+            android:text="Dati"
+            android:textColor="@color/ew_text_secondary"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border"
+            android:orientation="vertical"
+            android:padding="18dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cancella tutti i dati"
+                android:textColor="@color/ew_text"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Elimina tutti i movimenti salvati sul telefono. Prima fai un backup su Drive."
+                android:textColor="@color/ew_text_secondary"
+                android:textSize="13sp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/clearBtn"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="16dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="Cancella tutto"
+                android:textAllCaps="false"
+                android:textColor="@color/ew_expense"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:cornerRadius="16dp"
+                app:rippleColor="@color/ew_expense_container"
+                app:strokeColor="@color/ew_expense"
+                app:strokeWidth="1.5dp" />
+        </LinearLayout>
+
+        <!-- Versione -->
+        <TextView
+            android:id="@+id/versionText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="24dp"
+            android:textColor="@color/ew_text_secondary"
+            android:textSize="12sp" />
+    </LinearLayout>
+</ScrollView>

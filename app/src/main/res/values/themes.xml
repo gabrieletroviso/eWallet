@@ -48,6 +48,35 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <!-- Campo di testo con etichetta sul bordo (Ricerca) -->
+    <style name="Widget.eWallet.Input" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxCornerRadiusTopStart">14dp</item>
+        <item name="boxCornerRadiusTopEnd">14dp</item>
+        <item name="boxCornerRadiusBottomStart">14dp</item>
+        <item name="boxCornerRadiusBottomEnd">14dp</item>
+        <item name="boxStrokeColor">@color/input_stroke</item>
+        <item name="boxStrokeWidth">1.5dp</item>
+        <item name="boxStrokeWidthFocused">2dp</item>
+        <item name="boxBackgroundColor">@color/ew_surface</item>
+        <item name="hintTextColor">@color/ew_primary</item>
+        <item name="android:textColorHint">@color/ew_text_secondary</item>
+        <item name="suffixTextColor">@color/ew_text_secondary</item>
+    </style>
+
+    <!-- Chip selezionabile (tipi di movimento nella Ricerca) -->
+    <style name="Widget.eWallet.FilterChip" parent="Widget.MaterialComponents.Chip.Filter">
+        <item name="chipBackgroundColor">@color/chip_bg</item>
+        <item name="chipStrokeColor">@color/chip_stroke</item>
+        <item name="chipStrokeWidth">1.5dp</item>
+        <item name="chipCornerRadius">12dp</item>
+        <item name="chipMinHeight">40dp</item>
+        <item name="android:textColor">@color/chip_text</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="checkedIconTint">@color/ew_primary_dark</item>
+        <item name="rippleColor">@color/ew_primary_container</item>
+    </style>
+
     <!-- ===================== Barra di navigazione in basso ===================== -->
     <style name="Widget.eWallet.BottomNav" parent="Widget.MaterialComponents.BottomNavigationView">
         <item name="backgroundTint">@color/ew_surface</item>

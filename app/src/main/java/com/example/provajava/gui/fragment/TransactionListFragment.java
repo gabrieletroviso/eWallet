@@ -29,7 +29,7 @@ import com.example.provajava.datamodel.TTransaction;
 import com.example.provajava.dbmanager.DatabaseAccess;
 import com.example.provajava.enumerator.eOrder;
 import com.example.provajava.enumerator.eTranMainType;
-import com.example.provajava.gui.CategoryStyle;
+import com.example.provajava.gui.MovementList;
 import com.example.provajava.gui.activity.TodayActivityPage;
 import com.example.provajava.gui.fragment.dialog.TransactionDialog;
 import com.example.provajava.gui.fragment.interfaces.iFragmentManaged;
@@ -102,73 +102,12 @@ public class TransactionListFragment extends Fragment implements iFragmentManage
 
         LinearLayout container = view.findViewById(R.id.dayContainer);
         TextView empty = view.findViewById(R.id.emptyText);
-        container.removeAllViews();
 
         trss = month == null ? new ArrayList<>() : dba.getTransactionsByMonthID(month.getId(), eOrder.DATE);
         empty.setVisibility(trss.isEmpty() ? View.VISIBLE : View.GONE);
-
-        LayoutInflater inflater = LayoutInflater.from(getContext());
-        LocalDate currentDay = null;
-        LinearLayout rows = null;
-        TextView dayTotal = null;
-        double total = 0;
-
-        for (TTransaction t : trss) {
-            LocalDate date = Instant.ofEpochMilli(t.getDate()).atZone(ZoneId.systemDefault()).toLocalDate();
-
-            if (!date.equals(currentDay)) {
-                if (dayTotal != null) dayTotal.setText(Tools.formatEuro(total, true));
-                View section = inflater.inflate(R.layout.movement_day, container, false);
-                ((TextView) section.findViewById(R.id.dayLabel)).setText(dayLabel(date));
-                dayTotal = section.findViewById(R.id.dayTotal);
-                rows = section.findViewById(R.id.dayRows);
-                container.addView(section);
-                currentDay = date;
-                total = 0;
-            }
-
-            total += signedAmount(t);
-            rows.addView(buildRow(t, inflater, rows));
-        }
-        if (dayTotal != null) dayTotal.setText(Tools.formatEuro(total, true));
+        MovementList.render(container, trss, false, this::showPopupWindow);
 
         return view;
-    }
-
-    private View buildRow(TTransaction tran, LayoutInflater inflater, ViewGroup parent){
-
-        View row = inflater.inflate(R.layout.movement_row, parent, false);
-
-        CategoryStyle.of(tran.getTranSubType()).applyTo(row.findViewById(R.id.rowIcon));
-        ((TextView) row.findViewById(R.id.rowCategory)).setText(tran.getTranSubType().toString());
-
-        TextView desc = row.findViewById(R.id.rowDescription);
-        String d = tran.getDescription();
-        if (d != null && !d.trim().isEmpty()) {
-            desc.setText(d.trim());
-            desc.setVisibility(View.VISIBLE);
-        }
-
-        TextView amount = row.findViewById(R.id.rowAmount);
-        amount.setText(Tools.formatEuro(signedAmount(tran), true));
-        amount.setTextColor(ContextCompat.getColor(requireContext(),
-                tran.getTranMainType().equals(eTranMainType.EXPENSE) ? R.color.ew_text : R.color.ew_income));
-
-        row.setOnClickListener(v -> showPopupWindow(tran));
-        return row;
-    }
-
-    // Expenses are stored as positive amounts: show them as negative
-    private static double signedAmount(TTransaction t){
-        return t.getTranMainType().equals(eTranMainType.EXPENSE) ? -t.getAmount() : t.getAmount();
-    }
-
-    // "Domenica 1 novembre"
-    private static String dayLabel(LocalDate date){
-        String dow = date.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ITALIAN);
-        String month = date.getMonth().getDisplayName(TextStyle.FULL, Locale.ITALIAN);
-        return dow.substring(0, 1).toUpperCase(Locale.ITALIAN) + dow.substring(1)
-                + " " + date.getDayOfMonth() + " " + month;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

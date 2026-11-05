@@ -1,20 +1,16 @@
 package com.example.provajava.gui.fragment;
 
-import android.content.res.ColorStateList;
-import android.os.Build;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
@@ -24,38 +20,42 @@ import com.example.provajava.dbmanager.DatabaseAccess;
 import com.example.provajava.enumerator.eTranSubType;
 import com.example.provajava.gui.activity.SearchActivityPage;
 import com.example.provajava.gui.fragment.interfaces.iFragmentManaged;
+import com.google.android.material.chip.Chip;
 import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+// Ricerca · Filtri: period, amount range, description and transaction types
 public class TransactionFilterFragment extends Fragment implements iFragmentManaged {
+
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+    // Chip id → transaction type it filters on
+    private static final int[] CHIP_IDS = {R.id.salChip, R.id.othChip, R.id.necChip, R.id.unnChip, R.id.extChip};
+    private static final eTranSubType[] CHIP_TYPES = {eTranSubType.SALARY, eTranSubType.OTHER_INCOME,
+            eTranSubType.NECESSARY, eTranSubType.UNNECESSARY, eTranSubType.EXTRA};
 
     private SearchActivityPage listner;
     DatabaseAccess dba;
-    private List<eTranSubType> types;
-    private List<TTransaction> trss;
-    private LocalDate from;
-    private LocalDate to;
+    private View view;
+    private LocalDate from = LocalDate.now();
+    private LocalDate to = LocalDate.now();
 
     @Override
-    public void onFragmentDismissed() {
-
-    }
+    public void onFragmentDismissed() {}
 
     @Override
-    public void onFragmentClick(long id) {
-
-    }
+    public void onFragmentClick(long id) {}
 
     @Override
-    public void onFragmentNewTransaction(TTransaction tr) {
-
-    }
+    public void onFragmentNewTransaction(TTransaction tr) {}
 
     @Override
     public AppCompatActivity getParentPage() {
@@ -67,156 +67,112 @@ public class TransactionFilterFragment extends Fragment implements iFragmentMana
         this.dba = listner.dba;
     }
 
-    public TransactionFilterFragment(){
-        this.trss = new ArrayList<>();
-        this.types = new ArrayList<>();
-        this.from = LocalDate.now().atTime(0,0,0,0)
-                .atZone(ZoneId.systemDefault()).toLocalDate();
-        this.to = LocalDate.now().atTime(23, 59, 59, 999999999)
-                .atZone(ZoneId.systemDefault()).toLocalDate();
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        final View view = inflater.inflate(R.layout.searchfilter, null);
-        types.clear();
+        view = inflater.inflate(R.layout.searchfilter, container, false);
 
-        setDateBtn(view, R.id.fromBtn);
-        setDateBtn(view, R.id.toBtn);
-        EditText moreThen = view.findViewById(R.id.moreVal);
-        EditText lessThen = view.findViewById(R.id.lessVal);
-        EditText desc = view.findViewById(R.id.descVal);
-        ImageButton run = view.findViewById(R.id.searchBtn);
+        setDateField(R.id.fromLayout, R.id.fromBtn, true);
+        setDateField(R.id.toLayout, R.id.toBtn, false);
+        showDates();
 
-        Switch salSw = view.findViewById(R.id.salChip4);
-        Switch othSw = view.findViewById(R.id.othChip);
-        Switch necSw = view.findViewById(R.id.necChip);
-        Switch unnSw = view.findViewById(R.id.unnChip);
-        Switch extSw = view.findViewById(R.id.extChip);
-        salSw.setOnClickListener(v -> handleSwitch(view, R.id.salChip4, eTranSubType.SALARY, true));
-        othSw.setOnClickListener(v -> handleSwitch(view, R.id.othChip, eTranSubType.OTHER_INCOME, true));
-        unnSw.setOnClickListener(v -> handleSwitch(view, R.id.unnChip, eTranSubType.UNNECESSARY, false));
-        necSw.setOnClickListener(v -> handleSwitch(view, R.id.necChip, eTranSubType.NECESSARY, false));
-        extSw.setOnClickListener(v -> handleSwitch(view, R.id.extChip, eTranSubType.EXTRA, false));
-
-        run.setOnClickListener(v -> searchAndPopulate(types, moreThen, lessThen, desc.getText().toString()));
+        view.findViewById(R.id.resetBtn).setOnClickListener(v -> reset());
+        view.findViewById(R.id.searchBtn).setOnClickListener(v -> search());
 
         return view;
     }
 
-    private void setDateBtn(View popupView, int id) {
+    // ------------------------------------------------------------------------------- dates
 
-        Button btn = popupView.findViewById(id);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy");
-        final LocalDate[] chosenDate = {LocalDate.now()};
-
-        btn.setText(chosenDate[0].format(formatter));
-        btn.setOnClickListener(v -> {
-
-            MaterialDatePicker.Builder<Long> builder = MaterialDatePicker.Builder.datePicker();
-            builder.setTitleText("Seleziona una data")
-                    .setTheme(R.style.MaterialCalendarTheme);
-
-            MaterialDatePicker<Long> datePicker = builder.build();
-            datePicker.show(getParentFragmentManager(), "DATE_PICKER");
-
-            datePicker.addOnPositiveButtonClickListener(selection -> {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    chosenDate[0] = Instant.ofEpochMilli(datePicker.getSelection()).atZone(ZoneId.systemDefault()).toLocalDate();
-                    btn.setText(chosenDate[0].format(formatter));
-                    if(id==R.id.fromBtn) {
-                        from = chosenDate[0];
-                    } else{
-                        to = chosenDate[0].atTime(23, 59, 59, 999999999)
-                                .atZone(ZoneId.systemDefault()).toLocalDate();
-                    }
-                }
+    private void setDateField(int layoutId, int editId, boolean isFrom) {
+        View.OnClickListener open = v -> {
+            LocalDate current = isFrom ? from : to;
+            MaterialDatePicker<Long> picker = MaterialDatePicker.Builder.datePicker()
+                    .setTitleText(isFrom ? "Dal" : "Al")
+                    .setSelection(current.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli())
+                    .setTheme(R.style.MaterialCalendarTheme)
+                    .build();
+            picker.addOnPositiveButtonClickListener(selection -> {
+                // The picker returns midnight UTC of the chosen day
+                LocalDate chosen = Instant.ofEpochMilli(selection).atZone(ZoneOffset.UTC).toLocalDate();
+                if (isFrom) from = chosen; else to = chosen;
+                showDates();
             });
-        });
-
+            picker.show(getParentFragmentManager(), "DATE_PICKER");
+        };
+        view.findViewById(editId).setOnClickListener(open);
+        ((TextInputLayout) view.findViewById(layoutId)).setEndIconOnClickListener(open);
     }
 
-    private void handleSwitch(View v, Integer key, eTranSubType selected, boolean inc) {
+    private void showDates() {
+        ((EditText) view.findViewById(R.id.fromBtn)).setText(from.format(DATE_FORMAT));
+        ((EditText) view.findViewById(R.id.toBtn)).setText(to.format(DATE_FORMAT));
+    }
 
-        ColorStateList c = ColorStateList.valueOf(getResources().getColor(R.color.buttondefault, null));
-        ColorStateList ctr = ColorStateList.valueOf(getResources().getColor(R.color.trackdefault, null));
+    // ------------------------------------------------------------------------------ actions
 
-        if (((Switch) v.findViewById(key)).isChecked()) {
+    private void reset() {
+        from = LocalDate.now();
+        to = LocalDate.now();
+        showDates();
+        ((EditText) view.findViewById(R.id.moreVal)).setText("");
+        ((EditText) view.findViewById(R.id.lessVal)).setText("");
+        ((EditText) view.findViewById(R.id.descVal)).setText("");
+        for (int id : CHIP_IDS) {
+            ((Chip) view.findViewById(id)).setChecked(false);
+        }
+    }
 
-            types.add(selected);
-            if (inc) {
-                c = ColorStateList.valueOf(getResources().getColor(R.color.dark_green, null));
-            } else {
-                c = ColorStateList.valueOf(getResources().getColor(R.color.dark_red, null));
-            }
-
-            ((Switch) v.findViewById(key)).setThumbTintList(c);
-            ((Switch) v.findViewById(key)).setTrackTintList(c);
-
-        } else {
-            types.remove(selected);
-            ((Switch) v.findViewById(key)).setThumbTintList(c);
-            ((Switch) v.findViewById(key)).setTrackTintList(ctr);
+    private void search() {
+        Double more, less;
+        try {
+            more = parseAmount(R.id.moreVal);
+            less = parseAmount(R.id.lessVal);
+        } catch (NumberFormatException e) {
+            toast("Importo non valido");
+            return;
         }
 
-    }
-
-    private void searchAndPopulate(List<eTranSubType> types, EditText moreThen, EditText lessThen, String desc){
-
-        String moreStr = moreThen.getText().toString();
-        String lessStr = lessThen.getText().toString();
-
-        Double more = moreStr.isEmpty() ? null : Double.valueOf(moreStr);
-        Double less = lessStr.isEmpty() ? null : Double.valueOf(lessStr);
-
-        if(valuesCheck(more, less)){
-            trss = dba.getFilteredTransactionsV2(types.isEmpty() ? null : types,
-                    from.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli(),
-                    to.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli(),
-                    more, less, desc.isEmpty() ? null : desc);
-
-            if(trss!=null){
-                listner.populateTransaction(trss);
-            }
-
+        if (from.isAfter(to)) {
+            toast("La data \"Dal\" deve essere precedente o uguale alla data \"Al\"");
+            return;
+        }
+        if (more != null && less != null && more > less) {
+            toast("\"Maggiore di\" deve essere minore o uguale a \"Minore di\"");
+            return;
         }
 
-        // Passa alla lista
-    }
-    private boolean valuesCheck(Double moreThen, Double lessThen){
-
-        boolean ret = true;
-
-        if(moreThen!=null && lessThen !=null){
-            if(moreThen!=null & lessThen!=null){
-                if(moreThen>lessThen){
-                    Toast.makeText(getActivity(),
-                            "Il limite superiore deve essere maggiore o uguale a quello inferiore",
-                            Toast.LENGTH_SHORT).show();
-                    ret = false;
-                }else if(lessThen<moreThen){
-                    Toast.makeText(getActivity(),
-                            "Il limite inferiore deve essere minore o uguale a quello superiore",
-                            Toast.LENGTH_SHORT).show();
-                    ret = false;
-                }else if(from.isAfter(to)){
-                    Toast.makeText(getActivity(),
-                            "La data di inizio deve essere precedente o uguale a quella di fine",
-                            Toast.LENGTH_SHORT).show();
-                    ret = false;
-                }else if(to.isBefore(from)){
-                    Toast.makeText(getActivity(),
-                            "La data di fine deve essere successiva o uguale a quella di inizio",
-                            Toast.LENGTH_SHORT).show();
-                    ret = false;
-                }
-            }
+        List<eTranSubType> types = new ArrayList<>();
+        for (int i = 0; i < CHIP_IDS.length; i++) {
+            if (((Chip) view.findViewById(CHIP_IDS[i])).isChecked()) types.add(CHIP_TYPES[i]);
         }
+        String desc = ((EditText) view.findViewById(R.id.descVal)).getText().toString().trim();
 
-        return ret;
+        // Whole days: from the start of "Dal" to the end of "Al"
+        long start = from.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
+        long end = to.plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli() - 1;
+
+        List<TTransaction> trss = dba.getFilteredTransactionsV2(types.isEmpty() ? null : types,
+                start, end, more, less, desc.isEmpty() ? null : desc);
+
+        hideKeyboard();
+        listner.populateTransaction(trss != null ? trss : new ArrayList<>());
     }
 
+    // Accepts both "12,50" and "12.50"; empty means "no limit"
+    private Double parseAmount(int editId) {
+        String s = ((EditText) view.findViewById(editId)).getText().toString().trim().replace(',', '.');
+        return s.isEmpty() ? null : Double.valueOf(s);
+    }
+
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        view.clearFocus();
+    }
+
+    private void toast(String msg) {
+        Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+    }
 }
