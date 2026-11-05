@@ -1,46 +1,27 @@
 package com.example.provajava.gui.fragment;
 
-import android.widget.TextView;
-
 import com.example.provajava.R;
 import com.example.provajava.enumerator.eTranSubType;
-import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.data.PieEntry;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class IncomeFragment extends APieChartsFragment{
+// Statistiche · Entrate: share of Stipendio / Altro over the year's incomes
+public class IncomeFragment extends APieChartsFragment {
 
-    protected void setHeader(){
-        TextView header = view.findViewById(R.id.pieHead);
-        header.setText("Statistiche entrate");
+    @Override
+    protected String getTitle() {
+        return "Ripartizione entrate";
     }
 
-    protected PieChart setData(PieChart pie){
-
-        PieChart managedPie = pie;
-
-        ArrayList<PieEntry> pieEntries = new ArrayList<>();
-
-        float sal = (float) listner.dba.getAnnualSalaryIncome(listner.year.getId());
-        float oth = (float) listner.dba.getAnnualOtherIncome(listner.year.getId());
-
-        if (sal != 0.f) {
-            pieEntries.add(new PieEntry(sal, eTranSubType.SALARY.toString()));
-        }
-        if (oth != 0.f) {
-            pieEntries.add(new PieEntry(oth, eTranSubType.OTHER_INCOME.toString()));
-        }
-
-        managedPie = definePieChartProperties(managedPie, pieEntries);
-
-        return managedPie;
+    @Override
+    protected List<Slice> getSlices() {
+        long yearId = listner.year.getId();
+        List<Slice> list = new ArrayList<>();
+        list.add(new Slice(eTranSubType.SALARY.toString(), (float) listner.dba.getAnnualSalaryIncome(yearId),
+                R.color.ew_cat_stipendio, R.color.ew_income, R.color.ew_income_container));
+        list.add(new Slice(eTranSubType.OTHER_INCOME.toString(), (float) listner.dba.getAnnualOtherIncome(yearId),
+                R.color.ew_cat_altro, R.color.ew_income, R.color.ew_income_container));
+        return list;
     }
-
-    protected void setColorList(){
-        colorList = new ArrayList<>();
-        colorList.add(getResources().getColor(R.color.pastelsalary, null));
-        colorList.add(getResources().getColor(R.color.pastelgreen, null));
-    }
-
 }

@@ -1,9 +1,7 @@
 package com.example.provajava.gui.activity;
 
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.widget.ImageButton;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +15,7 @@ import com.example.provajava.datamodel.TMonth;
 import com.example.provajava.datamodel.TTransaction;
 import com.example.provajava.datamodel.TYear;
 import com.example.provajava.dbmanager.DatabaseAccess;
+import com.example.provajava.gui.BottomNav;
 import com.example.provajava.gui.fragment.TransactionFilterFragment;
 import com.example.provajava.gui.fragment.TransactionSearchFragment;
 
@@ -47,25 +46,7 @@ public class SearchActivityPage extends AppCompatActivity implements iActivityMa
     }
 
     private void manageButtons(){
-
-        ImageButton today = findViewById(R.id.todayStatBtn);
-        ImageButton stats = findViewById(R.id.todStatBtn);
-        ImageButton pref = findViewById(R.id.statisticsPrefBtn);
-
-        today.setOnClickListener(v -> {
-            Intent intent = new Intent(SearchActivityPage.this, TodayActivityPage.class);
-            startActivity(intent);
-        });
-
-        stats.setOnClickListener(v -> {
-            Intent intent = new Intent(SearchActivityPage.this, StatisticsActivityPage.class);
-            startActivity(intent);
-        });
-        pref.setOnClickListener(v -> {
-            Intent intent = new Intent(SearchActivityPage.this, ToolActivityPage.class);
-            startActivity(intent);
-        });
-
+        BottomNav.setup(this, R.id.nav_search);
     }
 
     @Override

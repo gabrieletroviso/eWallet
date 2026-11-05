@@ -12,15 +12,13 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
@@ -31,15 +29,17 @@ import com.example.provajava.datamodel.TTransaction;
 import com.example.provajava.dbmanager.DatabaseAccess;
 import com.example.provajava.enumerator.eOrder;
 import com.example.provajava.enumerator.eTranMainType;
+import com.example.provajava.gui.CategoryStyle;
 import com.example.provajava.gui.activity.TodayActivityPage;
 import com.example.provajava.gui.fragment.dialog.TransactionDialog;
 import com.example.provajava.gui.fragment.interfaces.iFragmentManaged;
 
 import java.time.Instant;
-import java.time.Month;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -97,64 +97,83 @@ public class TransactionListFragment extends Fragment implements iFragmentManage
         this.dba = listner.getDba();
     }
 
+    // Build the list: one section per day (header with the day's total + card with its rows)
     private View populateView(View view){
 
-        TextView header = view.findViewById(R.id.todTrnHeader);
-        TextView yearHdr = view.findViewById(R.id.todTrnHeaderYear);
+        LinearLayout container = view.findViewById(R.id.dayContainer);
+        TextView empty = view.findViewById(R.id.emptyText);
+        container.removeAllViews();
 
-        ConstraintLayout cstLy = view.findViewById(R.id.innerConstraintLayout);
-        TableLayout tableLayout = view.findViewById(R.id.tableLayout);
+        trss = month == null ? new ArrayList<>() : dba.getTransactionsByMonthID(month.getId(), eOrder.DATE);
+        empty.setVisibility(trss.isEmpty() ? View.VISIBLE : View.GONE);
 
-        trss = dba.getTransactionsByMonthID(month.getId(), eOrder.DATE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            header.setText(Month.of(month.getMonth()).getDisplayName(TextStyle.FULL, Locale.ITALIAN));
-            yearHdr.setText(String.valueOf(dba.getYearById(month.getYearId()).getYear()));
-        }
-
-        tableLayout.removeViews(1, tableLayout.getChildCount() - 1);
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+        LocalDate currentDay = null;
+        LinearLayout rows = null;
+        TextView dayTotal = null;
+        double total = 0;
 
         for (TTransaction t : trss) {
-            TableRow tableRow = getTableRow(t, tableLayout, cstLy);
-            tableLayout.addView(tableRow);
+            LocalDate date = Instant.ofEpochMilli(t.getDate()).atZone(ZoneId.systemDefault()).toLocalDate();
+
+            if (!date.equals(currentDay)) {
+                if (dayTotal != null) dayTotal.setText(Tools.formatEuro(total, true));
+                View section = inflater.inflate(R.layout.movement_day, container, false);
+                ((TextView) section.findViewById(R.id.dayLabel)).setText(dayLabel(date));
+                dayTotal = section.findViewById(R.id.dayTotal);
+                rows = section.findViewById(R.id.dayRows);
+                container.addView(section);
+                currentDay = date;
+                total = 0;
+            }
+
+            total += signedAmount(t);
+            rows.addView(buildRow(t, inflater, rows));
         }
+        if (dayTotal != null) dayTotal.setText(Tools.formatEuro(total, true));
 
         return view;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private TableRow getTableRow(TTransaction tran, TableLayout tableLayout, ConstraintLayout cstLy){
+    private View buildRow(TTransaction tran, LayoutInflater inflater, ViewGroup parent){
 
-        TableRow tableRow = (TableRow) LayoutInflater.from(getContext())
-                .inflate(R.layout.trnitem, tableLayout, false);
-        tableRow.setTag(tran);
+        View row = inflater.inflate(R.layout.movement_row, parent, false);
 
-        TextView day = tableRow.findViewById(R.id.day);
-        TextView subtype = tableRow.findViewById(R.id.subtype);
-        TextView value = tableRow.findViewById(R.id.value);
+        CategoryStyle.of(tran.getTranSubType()).applyTo(row.findViewById(R.id.rowIcon));
+        ((TextView) row.findViewById(R.id.rowCategory)).setText(tran.getTranSubType().toString());
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            day.setText(String.valueOf(Instant.ofEpochMilli(tran.getDate())
-                    .atZone(ZoneId.systemDefault()).toLocalDate().getDayOfMonth()));
-        }
-        subtype.setText(tran.getTranSubType().toString());
-        value.setText(Tools.roundToPrint(tran.getAmount()));
-
-        if (tran.getTranMainType().equals(eTranMainType.EXPENSE)) {
-            value.setText(String.valueOf(tran.getAmount()*-1));
-            value.setTextColor(getResources().getColor(R.color.dark_red, null));
-        }else{
-            value.setTextColor(getResources().getColor(R.color.dark_green, null));
+        TextView desc = row.findViewById(R.id.rowDescription);
+        String d = tran.getDescription();
+        if (d != null && !d.trim().isEmpty()) {
+            desc.setText(d.trim());
+            desc.setVisibility(View.VISIBLE);
         }
 
-        tableRow.setOnClickListener(view -> showPopupWindow(tableRow.getTag(), cstLy));
+        TextView amount = row.findViewById(R.id.rowAmount);
+        amount.setText(Tools.formatEuro(signedAmount(tran), true));
+        amount.setTextColor(ContextCompat.getColor(requireContext(),
+                tran.getTranMainType().equals(eTranMainType.EXPENSE) ? R.color.ew_text : R.color.ew_income));
 
-        return tableRow;
+        row.setOnClickListener(v -> showPopupWindow(tran));
+        return row;
+    }
+
+    // Expenses are stored as positive amounts: show them as negative
+    private static double signedAmount(TTransaction t){
+        return t.getTranMainType().equals(eTranMainType.EXPENSE) ? -t.getAmount() : t.getAmount();
+    }
+
+    // "Domenica 1 novembre"
+    private static String dayLabel(LocalDate date){
+        String dow = date.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ITALIAN);
+        String month = date.getMonth().getDisplayName(TextStyle.FULL, Locale.ITALIAN);
+        return dow.substring(0, 1).toUpperCase(Locale.ITALIAN) + dow.substring(1)
+                + " " + date.getDayOfMonth() + " " + month;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void showPopupWindow(Object tag, ConstraintLayout cstLy) {
+    private void showPopupWindow(TTransaction trns) {
 
-        TTransaction trns = (TTransaction) tag;
         String desc = trns.getDescription();
 
         LayoutInflater inflater = (LayoutInflater) listner.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -170,8 +189,6 @@ public class TransactionListFragment extends Fragment implements iFragmentManage
         int width = popupView.getMeasuredWidth();
         int height = popupView.getMeasuredHeight();
 
-        int[] location = new int[2];
-        cstLy.getLocationOnScreen(location);
         int screenWidth = getResources().getDisplayMetrics().widthPixels;
         int screenHeight = getResources().getDisplayMetrics().heightPixels;
         int x = (screenWidth - width) / 2;

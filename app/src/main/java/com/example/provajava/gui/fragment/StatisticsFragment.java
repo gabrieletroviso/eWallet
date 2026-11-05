@@ -1,24 +1,20 @@
 package com.example.provajava.gui.fragment;
 
-import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
@@ -30,32 +26,45 @@ import com.example.provajava.datamodel.TYear;
 import com.example.provajava.gui.activity.StatisticsActivityPage;
 import com.example.provajava.gui.bottomsheet.BottomSheetYear;
 import com.example.provajava.gui.fragment.interfaces.iFragmentManaged;
-import com.github.mikephil.charting.charts.ScatterChart;
-import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.BarLineChartBase;
+import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.ScatterData;
-import com.github.mikephil.charting.data.ScatterDataSet;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.utils.MPPointD;
 
-import java.text.DecimalFormat;
+import java.time.Month;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
+// Statistiche · Andamento: monthly balance (bars) and cumulative balance (line) of the selected year
 public class StatisticsFragment extends Fragment implements iFragmentManaged {
+
+    private static final String[] MONTH_INITIALS = {"G", "F", "M", "A", "M", "G", "L", "A", "S", "O", "N", "D"};
 
     private StatisticsActivityPage listner;
     private View view;
-    private List<TMonth> months;
+    private List<TMonth> months = new ArrayList<>();
+
+    // Monthly and cumulative balance by month number (1..12); null where the month has no data
+    private final Double[] balance = new Double[13];
+    private final Double[] cumulative = new Double[13];
+    private int lastMonth = 0;
 
     @Override
     public void onFragmentDismissed() {}
 
+    // Called by the year picker and by the ‹ › arrows of the page header
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onFragmentClick(long id) {
@@ -68,9 +77,7 @@ public class StatisticsFragment extends Fragment implements iFragmentManaged {
     }
 
     @Override
-    public void onFragmentNewTransaction(TTransaction tr) {
-
-    }
+    public void onFragmentNewTransaction(TTransaction tr) {}
 
     @Override
     public AppCompatActivity getParentPage() {
@@ -81,321 +88,264 @@ public class StatisticsFragment extends Fragment implements iFragmentManaged {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        super.onCreate(savedInstanceState);
-
         view = inflater.inflate(R.layout.statistics, container, false);
 
-        populateYear();
+        populateYear(-1);
         populateGraphs();
 
         return view;
-
     }
 
-    private void populateGraphs(){
-        setYearSavingsGraph();
-        setYearBehaviourGraph();
-    }
-
-    // Set saving graph
-    private void setYearSavingsGraph(){
-        ConstraintLayout savingCont = view.findViewById(R.id.savCont);
-        savingCont.removeAllViews();
-
-        ScatterChart sChart = new ScatterChart(view.getContext());
-
-        ArrayList<Entry> cumBalPos = new ArrayList<>();
-        ArrayList<Entry> cumBalNeg = new ArrayList<>();
-        float prevBal = 0;
-
-        for (TMonth t : months) {
-
-            int m = t.getMonth();
-            prevBal += (float)t.getBalance();
-
-            if(prevBal>=0){
-                cumBalPos.add(new Entry(m, (float) (prevBal)/1000));
-            }else{
-                cumBalNeg.add(new Entry(m, (float) (prevBal)/1000));
-            }
-        }
-
-        sChart = managePlot(sChart, cumBalPos, cumBalNeg);
-        savingCont.addView(sChart);
-
-    }
-
-    // Populate annual balance graphs
-    private void setYearBehaviourGraph(){
-
-        ConstraintLayout yearBeaCont = view.findViewById(R.id.yearBheavCont);
-        yearBeaCont.removeAllViews();
-
-        ScatterChart sChart = new ScatterChart(view.getContext());
-
-        ArrayList<Entry> balPos = new ArrayList<>();
-        ArrayList<Entry> balNeg = new ArrayList<>();
-
-        for (TMonth t : months) {
-
-            int m = t.getMonth();
-            double bal = t.getBalance();
-
-            if(bal>=0){
-                balPos.add(new Entry(m, (float) bal/1000));
-            }else{
-                balNeg.add(new Entry(m, (float) bal/1000));
-            }
-
-        }
-
-        sChart = managePlot(sChart, balPos, balNeg);
-        yearBeaCont.addView(sChart);
-    }
-
-    // Manage scatter plot with specific data and properties
-    private ScatterChart managePlot(ScatterChart sChart, ArrayList pos, ArrayList neg){
-
-        ScatterChart managed = sChart;
-
-        sChart = setScatterData(sChart, pos, neg);
-        sChart = manageXAxis(sChart);
-        sChart = manageYAxis(sChart);
-        sChart = setScatterParams(sChart);
-
-        sChart.getDescription().setEnabled(false);
-        sChart.invalidate();
-
-        return managed;
-
-    }
-
-    private ScatterChart manageYAxis(ScatterChart sChart){
-
-        ScatterChart manScatt = sChart;
-
-        float min = getMinValues(sChart.getData())-0.5f;
-        float max = getMaxValue(sChart.getData())+0.5f;
-        float del = max-min;
-
-        YAxis yAxisLeft = manScatt.getAxisLeft();
-        yAxisLeft.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
-        yAxisLeft.setAxisMinimum(min);
-        yAxisLeft.setAxisMaximum(max);
-        yAxisLeft.setGranularity(0.5f);
-        yAxisLeft.setLabelCount(Math.round(del/0.5f));
-        yAxisLeft.setValueFormatter(new ValueFormatter() {
-            @Override
-            public String getFormattedValue(float value) {
-                DecimalFormat f = new DecimalFormat("##.00");
-                return f.format(value) + " k";
-            }
-        });
-
-        yAxisLeft.setTypeface(ResourcesCompat.getFont(view.getContext(), R.font.nunito));
-        yAxisLeft.setTextSize(10f);
-
-        YAxis yAxisRight = manScatt.getAxisRight();
-        yAxisRight.setEnabled(false);
-
-        return manScatt;
-    }
-
-    private ScatterChart manageXAxis(ScatterChart sChart){
-
-        ScatterChart manScatt = sChart;
-
-        XAxis xAxis = sChart.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setGranularity(1f);
-        xAxis.setLabelCount(12);
-        xAxis.setValueFormatter(new ValueFormatter() {
-            @Override
-            public String getFormattedValue(float value) {
-                int month = (int) value;
-                switch (month) {
-                    case 1: return "Gen";
-                    case 2: return "Feb";
-                    case 3: return "Mar";
-                    case 4: return "Apr";
-                    case 5: return "Mag";
-                    case 6: return "Giu";
-                    case 7: return "Lug";
-                    case 8: return "Ago";
-                    case 9: return "Set";
-                    case 10: return "Ott";
-                    case 11: return "Nov";
-                    case 12: return "Dic";
-                    default: return "";
-                }
-            }
-        });
-        xAxis.setTypeface(ResourcesCompat.getFont(view.getContext(), R.font.nunito));
-        xAxis.setLabelRotationAngle(-45);
-
-        return manScatt;
-
-    }
-
-    // Convert to pixel
-    private int convertDpToPx(int dp) {
-        return (int) (dp * getResources().getDisplayMetrics().density);
-    }
-
-    private float getMaxValue(ScatterData data){
-
-        List<IScatterDataSet> dataSets = data.getDataSets();
-        ScatterDataSet sdata = (ScatterDataSet) dataSets.get(0);
-        List<Entry> list = sdata.getValues();
-
-        if(!list.isEmpty()){
-            float ret = list.get(0).getY();
-            for (Entry e : list) {
-                if(ret<e.getY()){
-                    ret = e.getY();
-                }
-            }
-            return ret;
-        }else{
-            return 0;
-        }
-    }
-
-    private float getMinValues(ScatterData data){
-
-        List<IScatterDataSet> dataSets = data.getDataSets();
-        ScatterDataSet sdata = (ScatterDataSet) dataSets.get(1);
-        List<Entry> list = sdata.getValues();
-
-        if(!list.isEmpty()){
-            float ret = list.get(0).getY();
-            for (Entry e : list) {
-                if(ret>e.getY()){
-                    ret = e.getY();
-                }
-            }
-            return ret;
-        }else{
-            return 0;
-        }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private void populateYear(){
-        populateYear(-1);
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private void populateYear(long id){
-
-        TYear y;
-        Button yearBtn = view.findViewById(R.id.yearBtn);
-        if(id<=0){
-            y = listner.year;
-        }else{
-            y = listner.dba.getYearById(id);
-        }
-
-        months = listner.dba.getMonthsByYearId(y.getId());
-        yearBtn.setText(String.valueOf(y.getYear()));
-
-        yearBtn.setOnClickListener(v -> {
-            BottomSheetYear bottomSheet = new BottomSheetYear(this, listner.dba);
-            bottomSheet.show(getParentFragmentManager(), bottomSheet.getTag());
-        });
-    }
-
-    private ScatterChart setScatterData(ScatterChart sCh, ArrayList pos, ArrayList neg){
-
-        ScatterDataSet setBalNegative = new ScatterDataSet(neg, "Negative Balance");
-        setBalNegative.setScatterShape(ScatterChart.ScatterShape.CIRCLE);
-        setBalNegative.setColor(getResources().getColor(R.color.apptext, null));
-        setBalNegative.setScatterShapeHoleColor(getResources().getColor(R.color.dark_red, null));
-        setBalNegative.setScatterShapeHoleRadius(5f);
-        setBalNegative.setScatterShapeSize(40f);
-        setBalNegative.setDrawValues(false);
-
-        ScatterDataSet setBalPositive = new ScatterDataSet(pos, "Positive Balance");
-        setBalPositive.setScatterShape(ScatterChart.ScatterShape.CIRCLE);
-        setBalPositive.setColor(getResources().getColor(R.color.apptext, null));  // Colore dei punti
-        setBalPositive.setScatterShapeHoleColor(getResources().getColor(R.color.dark_green, null));  // Colore del buco
-        setBalPositive.setScatterShapeHoleRadius(5f);
-        setBalPositive.setScatterShapeSize(40f);
-        setBalPositive.setDrawValues(false);
-
-        ScatterData scatterData = new ScatterData();
-        scatterData.addDataSet(setBalPositive);
-        scatterData.addDataSet(setBalNegative);
-
-        sCh.setData(scatterData);
-        sCh.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
-
-            @Override
-            public void onValueSelected(Entry e, Highlight h) {
-                int[] pos = getPositionOnScreen(sCh, setBalNegative, e);
-                showPopupWindow(pos, sCh, e.getY());
-            }
-
-            @Override
-            public void onNothingSelected() {}
-
-        });
-
-        return sCh;
-    }
-
-    private ScatterChart setScatterParams(ScatterChart sChart){
-
-        ScatterChart managed = sChart;
-
-        Legend legend = managed.getLegend();
-        legend.setEnabled(false);
-
-        ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(
-                convertDpToPx(330), convertDpToPx(210));
-
-        params.leftToLeft = ConstraintLayout.LayoutParams.PARENT_ID;
-        params.rightToRight = ConstraintLayout.LayoutParams.PARENT_ID;
-        params.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
-        params.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID;
-
-        managed.setLayoutParams(params);
-        return managed;
-    }
-
-    // Show popup on clicked point
-    private void showPopupWindow(int[] pos, ScatterChart scCh, float value) {
-
-        LayoutInflater inflater = (LayoutInflater) listner.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View popupView = inflater.inflate(R.layout.graphpopup, null);
-
-        final PopupWindow popupWindow = new PopupWindow(popupView,
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-        popupWindow.setOutsideTouchable(true);
-        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-        TextView popupText = popupView.findViewById(R.id.popup_text);
-        popupText.setText("€"+ Tools.roundToPrint(value*1000));
-
-        popupWindow.showAtLocation(scCh, Gravity.NO_GRAVITY, pos[0], pos[1]);
-        popupView.setOnClickListener(v -> popupWindow.dismiss());
-    }
-
-    // Get position in pixels
-    private int[] getPositionOnScreen(ScatterChart scCh, ScatterDataSet set, Entry entry){
-
-        int[] chartLocation = new int[2];
-        scCh.getLocationOnScreen(chartLocation);
-        MPPointD point = scCh.getTransformer(set.getAxisDependency()).getPixelForValues(entry.getX(), entry.getY());
-
-        int xPosition = (int) (chartLocation[0] + point.x);
-        int yPosition = (int) (chartLocation[1] + point.y);
-
-        return new int[]{xPosition, yPosition};
+    public void openYearPicker(){
+        BottomSheetYear bottomSheet = new BottomSheetYear(this, listner.dba);
+        bottomSheet.show(getParentFragmentManager(), bottomSheet.getTag());
     }
 
     public void setListner(StatisticsActivityPage listner) {
         this.listner = listner;
+    }
+
+    // ------------------------------------------------------------------------------------- data
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void populateYear(long id){
+
+        TYear y = id <= 0 ? listner.year : listner.dba.getYearById(id);
+        months = y == null ? new ArrayList<>() : listner.dba.getMonthsByYearId(y.getId());
+        if (months == null) months = new ArrayList<>();
+
+        for (int i = 0; i < 13; i++) { balance[i] = null; cumulative[i] = null; }
+        lastMonth = 0;
+        double sum = 0;
+        for (TMonth t : months) {
+            int m = t.getMonth();
+            sum += t.getBalance();
+            balance[m] = t.getBalance();
+            cumulative[m] = sum;
+            lastMonth = Math.max(lastMonth, m);
+        }
+    }
+
+    private void populateGraphs(){
+        setBalanceChart();
+        setCumulativeChart();
+        showBalance(lastMonth);
+        showCumulative(lastMonth);
+    }
+
+    // ----------------------------------------------------------------------------- bar chart
+
+    private void setBalanceChart(){
+        BarChart chart = view.findViewById(R.id.balanceChart);
+
+        List<BarEntry> entries = new ArrayList<>();
+        List<Integer> colors = new ArrayList<>();
+        for (int m = 1; m <= 12; m++) {
+            if (balance[m] == null) continue;
+            entries.add(new BarEntry(m, balance[m].floatValue()));
+            colors.add(color(balance[m] >= 0 ? R.color.ew_chart_positive : R.color.ew_chart_negative));
+        }
+
+        styleChart(chart);
+        if (entries.isEmpty()) { chart.clear(); return; }
+
+        BarDataSet set = new BarDataSet(entries, "Bilancio");
+        set.setAxisDependency(YAxis.AxisDependency.RIGHT);
+        set.setColors(colors);
+        set.setDrawValues(false);
+        set.setHighLightColor(color(R.color.ew_text));
+        set.setHighLightAlpha(40);
+
+        BarData data = new BarData(set);
+        data.setBarWidth(0.5f);
+        chart.setData(data);
+        fitYAxis(chart);
+
+        chart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override public void onValueSelected(Entry e, Highlight h) { showBalance((int) e.getX()); }
+            @Override public void onNothingSelected() { showBalance(lastMonth); }
+        });
+        chart.invalidate();
+    }
+
+    private void showBalance(int month){
+        TextView label = view.findViewById(R.id.balMonthLabel);
+        TextView value = view.findViewById(R.id.balMonthValue);
+        if (month <= 0 || balance[month] == null) {
+            label.setText("");
+            value.setText("Nessun dato");
+            value.setTextColor(color(R.color.ew_text_secondary));
+            return;
+        }
+        double b = balance[month];
+        label.setText(monthName(month));
+        value.setText(Tools.formatEuro(b, true));
+        value.setTextColor(color(b >= 0 ? R.color.ew_income : R.color.ew_expense));
+    }
+
+    // ---------------------------------------------------------------------------- line chart
+
+    private void setCumulativeChart(){
+        LineChart chart = view.findViewById(R.id.cumulativeChart);
+        @ColorInt int primary = color(R.color.ew_primary);
+
+        List<Entry> entries = new ArrayList<>();
+        for (int m = 1; m <= 12; m++) {
+            if (cumulative[m] != null) entries.add(new Entry(m, cumulative[m].floatValue()));
+        }
+
+        styleChart(chart);
+        if (entries.isEmpty()) { chart.clear(); return; }
+
+        LineDataSet line = new LineDataSet(entries, "Saldo");
+        line.setAxisDependency(YAxis.AxisDependency.RIGHT);
+        line.setColor(primary);
+        line.setLineWidth(2.5f);
+        line.setDrawCircles(false);
+        line.setDrawValues(false);
+        line.setDrawFilled(true);
+        line.setFillColor(primary);
+        line.setFillAlpha(26);
+        line.setHighLightColor(color(R.color.ew_outline));
+        line.setDrawHorizontalHighlightIndicator(false);
+        line.setHighlightLineWidth(1f);
+
+        LineData data = new LineData(line);
+
+        // Last point marked with a white dot outlined in the primary color, as in the design
+        if (!entries.isEmpty()) {
+            List<Entry> last = new ArrayList<>();
+            last.add(entries.get(entries.size() - 1));
+            LineDataSet dot = new LineDataSet(last, "Ultimo");
+            dot.setAxisDependency(YAxis.AxisDependency.RIGHT);
+            dot.setDrawValues(false);
+            dot.setCircleColor(primary);
+            dot.setCircleRadius(5f);
+            dot.setCircleHoleColor(Color.WHITE);
+            dot.setCircleHoleRadius(3f);
+            dot.setHighlightEnabled(false);
+            dot.setColor(Color.TRANSPARENT);
+            data.addDataSet(dot);
+        }
+
+        chart.setData(data);
+        fitYAxis(chart);
+
+        chart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override public void onValueSelected(Entry e, Highlight h) { showCumulative((int) e.getX()); }
+            @Override public void onNothingSelected() { showCumulative(lastMonth); }
+        });
+        chart.invalidate();
+    }
+
+    private void showCumulative(int month){
+        TextView label = view.findViewById(R.id.cumMonthLabel);
+        TextView value = view.findViewById(R.id.cumMonthValue);
+        if (month <= 0 || cumulative[month] == null) {
+            label.setText("");
+            value.setText("Nessun dato");
+            value.setTextColor(color(R.color.ew_text_secondary));
+            return;
+        }
+        double c = cumulative[month];
+        label.setText("A " + monthName(month).toLowerCase(Locale.ITALIAN));
+        value.setText(Tools.formatEuro(c, true));
+        value.setTextColor(color(c >= 0 ? R.color.ew_income : R.color.ew_expense));
+    }
+
+    // ------------------------------------------------------------------------------- shared
+
+    // Common look of both charts: no zoom/drag (so the pager can still swipe), month initials
+    // on the x axis, a few light dashed lines and compact amounts on the right
+    private void styleChart(BarLineChartBase<?> chart){
+        Typeface font = ResourcesCompat.getFont(requireContext(), R.font.nunito);
+        int secondary = color(R.color.ew_text_secondary);
+
+        chart.getDescription().setEnabled(false);
+        chart.getLegend().setEnabled(false);
+        chart.setScaleEnabled(false);
+        chart.setPinchZoom(false);
+        chart.setDoubleTapToZoomEnabled(false);
+        chart.setDragEnabled(false);
+        chart.setHighlightPerDragEnabled(false);
+        chart.setDrawGridBackground(false);
+        chart.setNoDataText("Nessun dato per quest'anno");
+        chart.setNoDataTextColor(secondary);
+        chart.setNoDataTextTypeface(font);
+        chart.setExtraBottomOffset(4f);
+
+        XAxis x = chart.getXAxis();
+        x.setPosition(XAxis.XAxisPosition.BOTTOM);
+        x.setAxisMinimum(0.5f);
+        x.setAxisMaximum(12.5f);
+        x.setGranularity(1f);
+        x.setLabelCount(12);
+        x.setDrawGridLines(false);
+        x.setDrawAxisLine(false);
+        x.setTypeface(font);
+        x.setTextSize(12f);
+        x.setTextColor(secondary);
+        x.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getAxisLabel(float value, com.github.mikephil.charting.components.AxisBase axis) {
+                int m = Math.round(value);
+                return m >= 1 && m <= 12 ? MONTH_INITIALS[m - 1] : "";
+            }
+        });
+
+        chart.getAxisLeft().setEnabled(false);
+
+        YAxis y = chart.getAxisRight();
+        y.setEnabled(true);
+        y.resetAxisMinimum();
+        y.resetAxisMaximum();
+        y.setLabelCount(3, false);
+        y.setDrawAxisLine(false);
+        y.setGridColor(color(R.color.ew_divider));
+        y.enableGridDashedLine(6f, 6f, 0f);
+        y.setDrawZeroLine(true);
+        y.setZeroLineColor(color(R.color.ew_outline));
+        y.setZeroLineWidth(1f);
+        y.setTypeface(font);
+        y.setTextSize(11f);
+        y.setTextColor(secondary);
+        y.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getAxisLabel(float value, com.github.mikephil.charting.components.AxisBase axis) {
+                return compact(value);
+            }
+        });
+    }
+
+    // Y range always includes zero (bars start from the zero line), with a little space around the data
+    private static void fitYAxis(BarLineChartBase<?> chart){
+        float min = Math.min(0f, chart.getData().getYMin());
+        float max = Math.max(0f, chart.getData().getYMax());
+        float pad = Math.max((max - min) * 0.1f, 1f);
+        YAxis y = chart.getAxisRight();
+        y.setAxisMinimum(min < 0 ? min - pad : 0f);
+        y.setAxisMaximum(max + pad);
+    }
+
+    // 500 → "500", 1500 → "1,5k", -2000 → "−2k"
+    private static String compact(float v){
+        String sign = v < 0 ? "−" : "";
+        float a = Math.abs(v);
+        if (a >= 1000) {
+            float k = Math.round(a / 100f) / 10f;
+            String s = (k == (int) k) ? String.valueOf((int) k) : String.valueOf(k).replace('.', ',');
+            return sign + s + "k";
+        }
+        return sign + Math.round(a);
+    }
+
+    private static String monthName(int month){
+        String n = Month.of(month).getDisplayName(TextStyle.FULL_STANDALONE, Locale.ITALIAN);
+        return n.substring(0, 1).toUpperCase(Locale.ITALIAN) + n.substring(1);
+    }
+
+    @ColorInt
+    private int color(int res){
+        return ContextCompat.getColor(requireContext(), res);
     }
 }

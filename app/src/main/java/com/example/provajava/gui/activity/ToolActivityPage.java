@@ -1,9 +1,7 @@
 package com.example.provajava.gui.activity;
 
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.widget.ImageButton;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +12,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.provajava.R;
 import com.example.provajava.dbmanager.DatabaseAccess;
+import com.example.provajava.gui.BottomNav;
 import com.example.provajava.gui.fragment.ToolFragment;
 
 public class ToolActivityPage extends AppCompatActivity {
@@ -38,26 +37,7 @@ public class ToolActivityPage extends AppCompatActivity {
     }
 
     private void manageToolbarButtons(){
-
-        ImageButton today = findViewById(R.id.todSearchBtn);
-        ImageButton stats = findViewById(R.id.statisticsToolBtn);
-        ImageButton src = findViewById(R.id.todSearchBtn);
-
-        today.setOnClickListener(v -> {
-            Intent intent = new Intent(ToolActivityPage.this, TodayActivityPage.class);
-            startActivity(intent);
-        });
-
-        stats.setOnClickListener(v -> {
-            Intent intent = new Intent(ToolActivityPage.this, StatisticsActivityPage.class);
-            startActivity(intent);
-        });
-
-        src.setOnClickListener(v -> {
-            Intent intent = new Intent(ToolActivityPage.this, SearchActivityPage.class);
-            startActivity(intent);
-        });
-
+        BottomNav.setup(this, R.id.nav_settings);
     }
 
     private class ScreenSlidePagerAdapter extends FragmentStateAdapter {

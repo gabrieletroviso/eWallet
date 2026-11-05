@@ -1,5 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- ===================== Redesign 2026 – palette ===================== -->
+    <!-- Base -->
+    <color name="ew_background">#F5F6FA</color>
+    <color name="ew_surface">#FFFFFF</color>
+    <color name="ew_track">#E9EBF2</color>
+    <color name="ew_divider">#E4E7EF</color>
+    <color name="ew_outline">#C9CEDA</color>
+    <color name="ew_text">#191C24</color>
+    <color name="ew_text_secondary">#5B6172</color>
+
+    <!-- Brand -->
+    <color name="ew_primary">#4338CA</color>
+    <color name="ew_primary_dark">#2A1F9C</color>
+    <color name="ew_primary_container">#E6E4FB</color>
+
+    <!-- Entrate / uscite -->
+    <color name="ew_income">#127A4B</color>
+    <color name="ew_income_container">#DDF3E7</color>
+    <color name="ew_on_income_container">#0F5F3A</color>
+    <color name="ew_expense">#C2362F</color>
+    <color name="ew_expense_container">#FBE3E1</color>
+    <color name="ew_on_expense_container">#9E2A24</color>
+
+    <!-- Grafici: bilancio positivo / negativo -->
+    <color name="ew_chart_positive">#1F8A5B</color>
+    <color name="ew_chart_negative">#F07A5A</color>
+
+    <!-- Categorie di spesa -->
+    <color name="ew_cat_necessaria">#3557C9</color>
+    <color name="ew_cat_necessaria_container">#E5ECFB</color>
+    <color name="ew_cat_superflua">#2BA597</color>
+    <color name="ew_cat_superflua_container">#DDF2EF</color>
+    <color name="ew_cat_extra">#F29A4A</color>
+    <color name="ew_cat_extra_container">#FDEBDB</color>
+
+    <!-- Colore delle icone di categoria (più scuro del colore dei grafici, per il contrasto) -->
+    <color name="ew_cat_necessaria_icon">#2F5FD0</color>
+    <color name="ew_cat_superflua_icon">#0F7A6D</color>
+    <color name="ew_cat_extra_icon">#B5621B</color>
+
+    <!-- Categorie di entrata -->
+    <color name="ew_cat_stipendio">#1F8A5B</color>
+    <color name="ew_cat_altro">#8BCFAA</color>
+
+    <!-- ============ Nomi storici, rimappati sulla nuova palette ============ -->
+    <!-- Restano finché le schermate non vengono ridisegnate una per una. -->
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
@@ -7,15 +54,15 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="appbackground">#F3F1E2</color>
-    <color name="apptext">#23323E</color>
-    <color name="dark_green">#3ad53d</color>
-    <color name="dark_red">#eb2d2d</color>
-    <color name="buttondefault">#F0F0F3</color>
-    <color name="trackdefault">#A9A9A9</color>
-    <color name="pastelblu">#A2C2E1</color>
-    <color name="pastelpink">#F6B7B1</color>
-    <color name="pastelgreen">#B2DAB6</color>
-    <color name="pastelsalary">#8CCF8C</color>
-    <color name="trade">#3088ff</color>
+    <color name="appbackground">@color/ew_background</color>
+    <color name="apptext">@color/ew_text</color>
+    <color name="dark_green">@color/ew_income</color>
+    <color name="dark_red">@color/ew_expense</color>
+    <color name="buttondefault">@color/ew_track</color>
+    <color name="trackdefault">@color/ew_outline</color>
+    <color name="pastelblu">@color/ew_cat_necessaria</color>
+    <color name="pastelpink">@color/ew_cat_extra</color>
+    <color name="pastelgreen">@color/ew_cat_superflua</color>
+    <color name="pastelsalary">@color/ew_cat_stipendio</color>
+    <color name="trade">@color/ew_primary</color>
 </resources>

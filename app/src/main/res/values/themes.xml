@@ -1,17 +1,91 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.eWallet" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <!-- Il redesign è solo chiaro: tema Light anche se il telefono è in modalità scura -->
+    <style name="Theme.eWallet" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorPrimary">@color/ew_primary</item>
+        <item name="colorPrimaryVariant">@color/ew_primary_dark</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_700</item>
-        <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+        <item name="colorSecondary">@color/ew_primary</item>
+        <item name="colorSecondaryVariant">@color/ew_primary_dark</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <!-- Superfici e testo -->
+        <item name="android:colorBackground">@color/ew_background</item>
+        <item name="android:windowBackground">@color/ew_background</item>
+        <item name="colorSurface">@color/ew_surface</item>
+        <item name="colorOnSurface">@color/ew_text</item>
+        <item name="colorOnBackground">@color/ew_text</item>
+        <item name="android:textColorPrimary">@color/ew_text</item>
+        <item name="android:textColorSecondary">@color/ew_text_secondary</item>
+        <!-- Font dell'app -->
+        <item name="fontFamily">@font/nunito</item>
+        <item name="android:fontFamily">@font/nunito</item>
+        <!-- Status bar chiara con icone scure, come lo sfondo -->
+        <item name="android:statusBarColor">@color/ew_background</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <!-- Forme arrotondate per i componenti Material -->
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.eWallet.Small</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.eWallet.Medium</item>
+    </style>
+
+    <style name="ShapeAppearance.eWallet.Small" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerSize">14dp</item>
+    </style>
+
+    <style name="ShapeAppearance.eWallet.Medium" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerSize">22dp</item>
+    </style>
+
+    <!-- Una scheda "a pillola" (lo stato selezionato lo applica PillTabs da codice) -->
+    <style name="Widget.eWallet.PillTab" parent="">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textColor">@color/ew_text_secondary</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <!-- ===================== Barra di navigazione in basso ===================== -->
+    <style name="Widget.eWallet.BottomNav" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="backgroundTint">@color/ew_surface</item>
+        <item name="android:background">@color/ew_surface</item>
+        <item name="elevation">0dp</item>
+        <item name="itemIconTint">@color/nav_icon_tint</item>
+        <item name="itemTextColor">@color/nav_text_color</item>
+        <item name="itemIconSize">22dp</item>
+        <item name="itemRippleColor">@color/ew_primary_container</item>
+        <item name="labelVisibilityMode">labeled</item>
+        <item name="itemTextAppearanceActive">@style/TextAppearance.eWallet.NavLabel.Active</item>
+        <item name="itemTextAppearanceInactive">@style/TextAppearance.eWallet.NavLabel</item>
+        <item name="itemActiveIndicatorStyle">@style/Widget.eWallet.BottomNav.Indicator</item>
+    </style>
+
+    <!-- La "pillola" dietro l'icona selezionata -->
+    <style name="Widget.eWallet.BottomNav.Indicator" parent="">
+        <item name="android:width">64dp</item>
+        <item name="android:height">32dp</item>
+        <item name="android:color">@color/ew_primary_container</item>
+        <item name="marginHorizontal">4dp</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.eWallet.Pill</item>
+    </style>
+
+    <style name="ShapeAppearance.eWallet.Pill" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="TextAppearance.eWallet.NavLabel" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="fontFamily">@font/nunito</item>
+        <item name="android:fontFamily">@font/nunito</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="TextAppearance.eWallet.NavLabel.Active">
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="MaterialCalendarTheme" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">

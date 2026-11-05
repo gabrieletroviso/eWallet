@@ -1,208 +1,229 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- Home · Riepilogo: bilancio del mese, entrate/uscite e pulsanti per aggiungere movimenti -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/homeAct"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clickable="false">
+    android:orientation="vertical"
+    android:paddingStart="16dp"
+    android:paddingTop="20dp"
+    android:paddingEnd="16dp"
+    android:paddingBottom="20dp">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline2"
-        android:layout_width="wrap_content"
+    <!-- Card principale: bilancio del mese -->
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/bg_card_primary"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="205dp" />
+        android:padding="24dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/overvFrame"
-        android:layout_width="289dp"
-        android:layout_height="434dp"
-        android:layout_marginStart="87dp"
-        android:layout_marginTop="7dp"
-        android:layout_marginEnd="87dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/yearTodLabel">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Bilancio del mese"
+                android:textColor="#E0FFFFFF"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_badge"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="8dp"
+                android:paddingTop="6dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="6dp">
+
+                <ImageView
+                    android:id="@+id/balImg"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:layout_marginEnd="4dp"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_trend_flat"
+                    app:tint="@color/white" />
+
+                <TextView
+                    android:id="@+id/balBadge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="In pari"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/incLbl"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="100dp"
-            android:text="entrate"
-            android:textColor="@color/apptext"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <EditText
-            android:id="@+id/incValue"
-            android:layout_width="254dp"
-            android:layout_height="64dp"
-            android:layout_marginTop="3dp"
-            android:background="@drawable/border"
-            android:editable="false"
-            android:ems="10"
-            android:enabled="false"
-            android:fontFamily="@font/nunito"
-            android:gravity="center"
-            android:inputType="numberDecimal"
-            android:textColor="@color/apptext"
-            android:textIsSelectable="false"
-            android:textSize="34sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/incLbl" />
-
-        <TextView
-            android:id="@+id/expLbl"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="5dp"
-            android:text="uscite"
-            android:textColor="@color/apptext"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/incValue" />
-
-        <EditText
-            android:id="@+id/expValue"
-            android:layout_width="254dp"
-            android:layout_height="64dp"
-            android:layout_marginTop="3dp"
-            android:background="@drawable/border"
-            android:editable="false"
-            android:ems="10"
-            android:enabled="false"
-            android:fontFamily="@font/nunito"
-            android:gravity="center"
-            android:inputType="numberDecimal"
-            android:textColor="@color/apptext"
-            android:textIsSelectable="false"
-            android:textSize="34sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/expLbl" />
-
-        <TextView
-            android:id="@+id/balLbl"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="34dp"
-            android:text="bilancio"
-            android:textColor="@color/apptext"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/expValue" />
-
-        <EditText
             android:id="@+id/balValue"
-            android:layout_width="254dp"
-            android:layout_height="64dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="3dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFeatureSettings="tnum"
+            android:letterSpacing="-0.02"
+            android:text="0,00 €"
+            android:textColor="@color/white"
+            android:textSize="44sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- Entrate / Uscite -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="6dp"
+            android:layout_weight="1"
             android:background="@drawable/border"
-            android:editable="false"
-            android:ems="10"
-            android:enabled="false"
-            android:fontFamily="@font/nunito"
-            android:gravity="center"
-            android:inputType="numberSigned"
-            android:textColor="@color/apptext"
-            android:textIsSelectable="false"
-            android:textSize="34sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.636"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/balLbl" />
+            android:orientation="vertical"
+            android:padding="16dp">
 
-        <ImageView
-            android:id="@+id/balImg"
-            android:layout_width="36dp"
-            android:layout_height="32dp"
-            android:layout_marginStart="90dp"
-            android:layout_marginBottom="5dp"
-            app:layout_constraintBottom_toTopOf="@+id/balValue"
-            app:layout_constraintStart_toEndOf="@+id/balLbl"
-            app:srcCompat="@drawable/draw" />
+            <ImageView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="@drawable/bg_tile_income"
+                android:importantForAccessibility="no"
+                android:padding="8dp"
+                android:src="@drawable/ic_arrow_in"
+                app:tint="@color/ew_income" />
 
-        <Button
-            android:id="@+id/monthBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="67dp"
-            android:layout_marginStart="28dp"
-            android:layout_marginEnd="27dp"
-            android:background="?attr/selectableItemBackground"
-            android:fontFamily="@font/nunito"
-            android:text="monthLbl"
-            android:textAllCaps="false"
-            android:textColor="@color/apptext"
-            android:textSize="34sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Entrate"
+                android:textColor="@color/ew_text_secondary"
+                android:textSize="13sp"
+                android:textStyle="bold" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/incValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFeatureSettings="tnum"
+                android:text="0,00 €"
+                android:textColor="@color/ew_text"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/btnFrame"
-        android:layout_width="240dp"
-        android:layout_height="66dp"
-        android:layout_marginStart="84dp"
-        android:layout_marginTop="21dp"
-        android:layout_marginEnd="84dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.333"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/overvFrame">
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/addBtn"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="4dp"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:foregroundGravity="center"
-            android:scaleType="centerCrop"
-            app:backgroundTint="@color/dark_green"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/income" />
+            android:layout_marginStart="6dp"
+            android:layout_weight="1"
+            android:background="@drawable/border"
+            android:orientation="vertical"
+            android:padding="16dp">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/expBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="40dp"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"
-            app:backgroundTint="@color/dark_red"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/expense" />
+            <ImageView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="@drawable/bg_tile_expense"
+                android:importantForAccessibility="no"
+                android:padding="8dp"
+                android:src="@drawable/ic_arrow_out"
+                app:tint="@color/ew_expense" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Uscite"
+                android:textColor="@color/ew_text_secondary"
+                android:textSize="13sp"
+                android:textStyle="bold" />
 
+            <TextView
+                android:id="@+id/expValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFeatureSettings="tnum"
+                android:text="0,00 €"
+                android:textColor="@color/ew_text"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <!-- Aggiungi movimento -->
     <TextView
-        android:id="@+id/yearTodLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="171dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="171dp"
-        android:fontFamily="@font/nunito"
-        android:text="yearLbl"
-        android:textColor="@color/apptext"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:paddingStart="4dp"
+        android:text="Aggiungi movimento"
+        android:textColor="@color/ew_text_secondary"
+        android:textSize="13sp"
+        android:textStyle="bold" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/addBtn"
+            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_marginEnd="6dp"
+            android:layout_weight="1"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="Entrata"
+            android:textAllCaps="false"
+            android:textColor="@color/ew_on_income_container"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:backgroundTint="@color/ew_income_container"
+            app:cornerRadius="18dp"
+            app:icon="@drawable/ic_plus"
+            app:iconGravity="textStart"
+            app:iconSize="20dp"
+            app:iconTint="@color/ew_on_income_container" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/expBtn"
+            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_marginStart="6dp"
+            android:layout_weight="1"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="Uscita"
+            android:textAllCaps="false"
+            android:textColor="@color/ew_on_expense_container"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:backgroundTint="@color/ew_expense_container"
+            app:cornerRadius="18dp"
+            app:icon="@drawable/ic_minus"
+            app:iconGravity="textStart"
+            app:iconSize="20dp"
+            app:iconTint="@color/ew_on_expense_container" />
+    </LinearLayout>
+
+</LinearLayout>

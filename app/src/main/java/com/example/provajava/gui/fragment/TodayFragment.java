@@ -1,13 +1,10 @@
 package com.example.provajava.gui.fragment;
 
-import android.annotation.SuppressLint;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,12 +25,7 @@ import com.example.provajava.gui.activity.TodayActivityPage;
 import com.example.provajava.gui.bottomsheet.BottomSheetMonth;
 import com.example.provajava.gui.fragment.dialog.TransactionDialog;
 import com.example.provajava.gui.fragment.interfaces.iFragmentManaged;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import java.time.LocalDate;
-import java.time.Month;
-import java.time.format.TextStyle;
-import java.util.Locale;
 
 public class TodayFragment extends Fragment implements iFragmentManaged {
 
@@ -71,7 +63,6 @@ public class TodayFragment extends Fragment implements iFragmentManaged {
             day = LocalDate.of(dba.getYearById(month.getYearId()).getYear(), month.getMonth(), 1);
         }
 
-        populateFixField();
         populateValues();
         manageButtons();
     }
@@ -109,18 +100,10 @@ public class TodayFragment extends Fragment implements iFragmentManaged {
         this.dba = listner.getDba();
     }
 
-    @SuppressLint("NewApi")
-    private void populateFixField(){
-
-        Button monthBtn = view.findViewById(R.id.monthBtn);
-        TextView yearLbl = view.findViewById(R.id.yearTodLabel);
-        monthBtn.setText(Month.of(month.getMonth()).getDisplayName(TextStyle.FULL, Locale.ITALIAN));
-        yearLbl.setText(String.valueOf(dba.getYearById(month.getYearId()).getYear()));
-
-        monthBtn.setOnClickListener(v -> {
-            BottomSheetMonth bottomSheet = new BottomSheetMonth(this, dba);
-            bottomSheet.show(getParentFragmentManager(), bottomSheet.getTag());
-        });
+    // Month picker (bottom sheet), opened by tapping the month title in the page header
+    public void openMonthPicker(){
+        BottomSheetMonth bottomSheet = new BottomSheetMonth(this, dba);
+        bottomSheet.show(getParentFragmentManager(), bottomSheet.getTag());
     }
 
     private void populateValues(){
@@ -128,40 +111,36 @@ public class TodayFragment extends Fragment implements iFragmentManaged {
         TextView inc = view.findViewById(R.id.incValue);
         TextView exp = view.findViewById(R.id.expValue);
         TextView bal = view.findViewById(R.id.balValue);
+        TextView badge = view.findViewById(R.id.balBadge);
         ImageView img = view.findViewById(R.id.balImg);
 
-        if(month == null){
-            inc.setText("0");
-            exp.setText("0");
-            bal.setText("0");
+        double e = 0, i = 0;
+        if(month != null){
+            e = dba.getMonthlyTotExpenses(month.getId());
+            i = dba.getMonthlyTotIncomes(month.getId());
+        }
+        double b = Math.round((i - e) * 100) / 100.0;
 
+        inc.setText(Tools.formatEuro(i));
+        exp.setText(Tools.formatEuro(e));
+        bal.setText(Tools.formatEuro(b));
+
+        if(b == 0){
+            badge.setText("In pari");
+            img.setImageResource(R.drawable.ic_trend_flat);
+        }else if(b > 0){
+            badge.setText("Positivo");
+            img.setImageResource(R.drawable.ic_trend_up);
         }else{
-
-            double e = dba.getMonthlyTotExpenses(month.getId());
-            double i = dba.getMonthlyTotIncomes(month.getId());
-            double b = i-e;
-
-            exp.setText(Tools.roundToPrint(e));
-            inc.setText(Tools.roundToPrint(i));
-            bal.setText(Tools.roundToPrint(b));
-            if(b==0){
-                bal.setTextColor(Color.GRAY);
-                img.setImageDrawable(getResources().getDrawable(R.drawable.draw, null));
-            }else if(b>0){
-                bal.setTextColor(getResources().getColor(R.color.dark_green, null));
-                img.setImageDrawable(getResources().getDrawable(R.drawable.up, null));
-            }else{
-                bal.setTextColor(getResources().getColor(R.color.dark_red, null));
-                img.setImageDrawable(getResources().getDrawable(R.drawable.down, null));
-            }
-
+            badge.setText("Negativo");
+            img.setImageResource(R.drawable.ic_trend_down);
         }
     }
 
     private void manageButtons(){
 
-        FloatingActionButton addButton = view.findViewById(R.id.addBtn);
-        FloatingActionButton expButton = view.findViewById(R.id.expBtn);
+        View addButton = view.findViewById(R.id.addBtn);
+        View expButton = view.findViewById(R.id.expBtn);
 
         addButton.setOnClickListener(v -> {
             DialogFragment dialog = new TransactionDialog(dba, true, null, this);
@@ -181,13 +160,14 @@ public class TodayFragment extends Fragment implements iFragmentManaged {
             TTransaction none = dba.addTransaction(day, -1, eTranSubType.NONE);
             month = dba.getMonthById(none.getMonthId());
             dba.deleteTransaction(none);
+            // Let the page (header, Movimenti) know about the month just created
+            listner.onChangeMonth(month);
         }
     }
 
     private View populateView(View view){
 
         checkMonth();
-        populateFixField();
         populateValues();
         manageButtons();
 
