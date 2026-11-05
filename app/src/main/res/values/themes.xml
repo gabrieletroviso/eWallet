@@ -77,6 +77,24 @@
         <item name="rippleColor">@color/ew_primary_container</item>
     </style>
 
+    <!-- Pannello dal basso con gli angoli superiori arrotondati (dettaglio movimento) -->
+    <style name="ThemeOverlay.eWallet.BottomSheet" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Widget.eWallet.BottomSheet</item>
+    </style>
+
+    <style name="Widget.eWallet.BottomSheet" parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <item name="backgroundTint">@color/ew_surface</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.eWallet.SheetTop</item>
+    </style>
+
+    <style name="ShapeAppearance.eWallet.SheetTop" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">28dp</item>
+        <item name="cornerSizeTopRight">28dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+    </style>
+
     <!-- ===================== Barra di navigazione in basso ===================== -->
     <style name="Widget.eWallet.BottomNav" parent="Widget.MaterialComponents.BottomNavigationView">
         <item name="backgroundTint">@color/ew_surface</item>

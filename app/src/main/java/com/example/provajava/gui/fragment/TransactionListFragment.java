@@ -1,17 +1,11 @@
 package com.example.provajava.gui.fragment;
 
-import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -29,16 +23,18 @@ import com.example.provajava.datamodel.TTransaction;
 import com.example.provajava.dbmanager.DatabaseAccess;
 import com.example.provajava.enumerator.eOrder;
 import com.example.provajava.enumerator.eTranMainType;
+import com.example.provajava.gui.CategoryStyle;
 import com.example.provajava.gui.MovementList;
 import com.example.provajava.gui.activity.TodayActivityPage;
 import com.example.provajava.gui.fragment.dialog.TransactionDialog;
 import com.example.provajava.gui.fragment.interfaces.iFragmentManaged;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -110,54 +106,55 @@ public class TransactionListFragment extends Fragment implements iFragmentManage
         return view;
     }
 
+    // Detail of a transaction in a panel from the bottom: category, amount, date, description,
+    // Modifica (opens the edit window) and Elimina (asks for confirmation)
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void showPopupWindow(TTransaction trns) {
 
+        BottomSheetDialog sheet = new BottomSheetDialog(requireContext(), R.style.ThemeOverlay_eWallet_BottomSheet);
+        View content = LayoutInflater.from(sheet.getContext()).inflate(R.layout.transaction_sheet, null, false);
+        sheet.setContentView(content);
+
+        boolean isIncome = trns.getTranMainType().equals(eTranMainType.INCOME);
+        LocalDate date = Instant.ofEpochMilli(trns.getDate()).atZone(ZoneId.systemDefault()).toLocalDate();
+
+        CategoryStyle.of(trns.getTranSubType()).applyTo(content.findViewById(R.id.sheetIcon));
+        ((TextView) content.findViewById(R.id.sheetCategory)).setText(
+                trns.getTranSubType() + " · " + (isIncome ? "entrata" : "uscita"));
+        String day = date.format(DateTimeFormatter.ofPattern("EEEE d MMMM yyyy", Locale.ITALIAN));
+        ((TextView) content.findViewById(R.id.sheetDate)).setText(
+                day.substring(0, 1).toUpperCase(Locale.ITALIAN) + day.substring(1));
+
+        TextView amount = content.findViewById(R.id.sheetAmount);
+        amount.setText(Tools.formatEuro(MovementList.signedAmount(trns), true));
+        amount.setTextColor(ContextCompat.getColor(requireContext(), isIncome ? R.color.ew_income : R.color.ew_text));
+
+        TextView descText = content.findViewById(R.id.sheetDescription);
         String desc = trns.getDescription();
+        boolean hasDesc = desc != null && !desc.trim().isEmpty();
+        descText.setText(hasDesc ? desc.trim() : "Nessuna descrizione");
+        descText.setTextColor(ContextCompat.getColor(requireContext(),
+                hasDesc ? R.color.ew_text : R.color.ew_text_secondary));
 
-        LayoutInflater inflater = (LayoutInflater) listner.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View popupView = inflater.inflate(R.layout.transactionpopup, null);
-
-        final PopupWindow popupWindow = new PopupWindow(popupView,
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-        popupWindow.setOutsideTouchable(true);
-        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-        popupView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-        int width = popupView.getMeasuredWidth();
-        int height = popupView.getMeasuredHeight();
-
-        int screenWidth = getResources().getDisplayMetrics().widthPixels;
-        int screenHeight = getResources().getDisplayMetrics().heightPixels;
-        int x = (screenWidth - width) / 2;
-        int y = (screenHeight - height) / 2;
-
-        TextView dataText = popupView.findViewById(R.id.dataTrnsListText);
-        ImageButton mod = popupView.findViewById(R.id.editBtn);
-        ImageButton del = popupView.findViewById(R.id.deleteBtn);
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy");
-        dataText.setText(Instant.ofEpochMilli(trns.getDate()).atZone(ZoneId.systemDefault()).toLocalDate().format(formatter));
-
-        TextView descText = popupView.findViewById(R.id.editTextTextMultiLine);
-        descText.setText(desc != null && !desc.isEmpty() ? desc : "");
-
-        popupWindow.showAtLocation(getActivity().findViewById(android.R.id.content), Gravity.NO_GRAVITY, x, y);
-        popupView.setOnClickListener(v -> popupWindow.dismiss());
-
-        mod.setOnClickListener(v -> {
-            DialogFragment dialog = new TransactionDialog(
-                    dba, trns.getTranMainType().equals(eTranMainType.INCOME) ? true : false,
-                    trns, this);
-            dialog.show(getParentFragmentManager(), "Income");
-            popupWindow.dismiss();
+        content.findViewById(R.id.editBtn).setOnClickListener(v -> {
+            sheet.dismiss();
+            DialogFragment dialog = new TransactionDialog(dba, isIncome, trns, this);
+            dialog.show(getParentFragmentManager(), isIncome ? "Income" : "Expense");
         });
 
-        del.setOnClickListener(v -> {
-            dba.deleteTransaction(trns);
-            listner.onNewTransaction(null);
-            popupWindow.dismiss();
-        });
+        content.findViewById(R.id.deleteBtn).setOnClickListener(v ->
+                new MaterialAlertDialogBuilder(requireContext())
+                        .setTitle("Eliminare il movimento?")
+                        .setMessage(trns.getTranSubType() + " di " + Tools.formatEuro(trns.getAmount())
+                                + " del " + date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + ".")
+                        .setNegativeButton("Annulla", null)
+                        .setPositiveButton("Elimina", (d, w) -> {
+                            dba.deleteTransaction(trns);
+                            sheet.dismiss();
+                            listner.onNewTransaction(null);
+                        })
+                        .show());
+
+        sheet.show();
     }
 }

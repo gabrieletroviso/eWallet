@@ -3,54 +3,67 @@ package com.example.provajava.gui.fragment.dialog;
 import android.content.res.ColorStateList;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Switch;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.widget.ImageViewCompat;
 
 import com.example.provajava.R;
 import com.example.provajava.datamodel.TMonth;
 import com.example.provajava.datamodel.TTransaction;
 import com.example.provajava.datamodel.TYear;
 import com.example.provajava.dbmanager.DatabaseAccess;
-import com.example.provajava.enumerator.eTranMainType;
 import com.example.provajava.enumerator.eTranSubType;
+import com.example.provajava.gui.CategoryStyle;
 import com.example.provajava.gui.activity.TodayActivityPage;
 import com.example.provajava.gui.fragment.TodayFragment;
 import com.example.provajava.gui.fragment.interfaces.iFragmentManaged;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.MaterialDatePicker;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputLayout;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.TimeZone;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
+// Window to add a new income/expense or edit an existing one:
+// amount, date (within the month shown in Home), category and description
 public class TransactionDialog extends ManagedDialog {
+
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private static final eTranSubType[] INCOME_TYPES = {eTranSubType.SALARY, eTranSubType.OTHER_INCOME};
+    private static final eTranSubType[] EXPENSE_TYPES = {eTranSubType.NECESSARY, eTranSubType.UNNECESSARY, eTranSubType.EXTRA};
 
     boolean isIncome;
     DatabaseAccess dba;
-    ArrayList<Integer> switches;
-    eTranSubType type = eTranSubType.NONE;
     LocalDate chosenDate = null;
     TTransaction transaction = null;
+
+    private View view;
+    private final Map<Integer, eTranSubType> chipTypes = new HashMap<>();
 
     public TransactionDialog(DatabaseAccess dba, boolean isInc, TTransaction trans, iFragmentManaged parent){
         super(parent);
         this.dba = dba;
         this.isIncome = isInc;
-        this.switches = new ArrayList<>();
         this.transaction = trans;
     }
 
@@ -58,249 +71,172 @@ public class TransactionDialog extends ManagedDialog {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view;
-        switches.clear();
-        if(transaction!=null){
-            chosenDate = Instant.ofEpochMilli(transaction.getDate())
-                    .atZone(ZoneId.systemDefault())
-                    .toLocalDate();
-        }
-        else{
-            chosenDate = ((TodayFragment)listner).day;
+        view = inflater.inflate(R.layout.transaction_dialog, container, false);
+
+        if (transaction != null) {
+            chosenDate = Instant.ofEpochMilli(transaction.getDate()).atZone(ZoneId.systemDefault()).toLocalDate();
+        } else {
+            chosenDate = ((TodayFragment) listner).day;
         }
 
-        if(isIncome){
-            view = inflater.inflate(R.layout.incomefrag, container, false);
-            switches.add(R.id.salSw);
-            switches.add(R.id.othSw);
+        setHeader();
+        buildCategoryChips(inflater);
+        manageDateField();
 
-            Switch salSw = view.findViewById(R.id.salSw);
-            Switch othSw = view.findViewById(R.id.othSw);
-            salSw.setOnClickListener(v -> handleSwitch(view, R.id.salSw, eTranSubType.SALARY, true));
-            othSw.setOnClickListener(v -> handleSwitch(view, R.id.othSw, eTranSubType.OTHER_INCOME, true));
-
-            FloatingActionButton ok = view.findViewById(R.id.incBtn);
-            ok.setOnClickListener(v -> handleIncomeBtn(view));
-
-            if(transaction!=null){
-
-                EditText val = view.findViewById(R.id.incValue);
-                EditText desc = view.findViewById(R.id.descIncValue);
-
-                val.setText(String.valueOf(transaction.getAmount()));
-                desc.setText(transaction.getDescription());
-
-                switch (transaction.getTranSubType()){
-                    case OTHER_INCOME:
-                        othSw.setChecked(true);
-                        othSw.callOnClick();
-                        break;
-                    default:
-                        salSw.setChecked(true);
-                        salSw.callOnClick();
-                        break;
-                }
-            }
-
-        }else{
-            view = inflater.inflate(R.layout.expensefrag, container, false);
-            switches.add(R.id.unnSw);
-            switches.add(R.id.necSw);
-            switches.add(R.id.extSw);
-
-            Switch unnSw = view.findViewById(R.id.unnSw);
-            Switch necSw = view.findViewById(R.id.necSw);
-            Switch extSw = view.findViewById(R.id.extSw);
-
-            unnSw.setOnClickListener(v -> handleSwitch(view, R.id.unnSw, eTranSubType.UNNECESSARY, false));
-            necSw.setOnClickListener(v -> handleSwitch(view, R.id.necSw, eTranSubType.NECESSARY, false));
-            extSw.setOnClickListener(v -> handleSwitch(view, R.id.extSw, eTranSubType.EXTRA, false));
-
-            FloatingActionButton ok = view.findViewById(R.id.expBtn);
-            ok.setOnClickListener(v -> handleExpBtn(view));
-
-            if(transaction!=null) {
-
-                EditText val = view.findViewById(R.id.expValue);
-                EditText desc = view.findViewById(R.id.descValue);
-
-                val.setText(String.valueOf(transaction.getAmount()));
-                desc.setText(transaction.getDescription());
-
-                switch (transaction.getTranSubType()) {
-                    case UNNECESSARY:
-                        unnSw.setChecked(true);
-                        unnSw.callOnClick();
-                        break;
-                    case EXTRA:
-                        extSw.setChecked(true);
-                        extSw.callOnClick();
-                        break;
-                    default:
-                        necSw.setChecked(true);
-                        necSw.callOnClick();
-                        break;
-                }
-            }
+        if (transaction != null) {
+            ((EditText) view.findViewById(R.id.amountValue)).setText(formatAmount(transaction.getAmount()));
+            ((EditText) view.findViewById(R.id.descValue)).setText(transaction.getDescription());
         }
 
-        manageDateButton(view);
+        // ManagedDialog builds this view twice (once for the AlertDialog, once as the fragment view):
+        // "Salva" must read the fields of the same view it belongs to, never the last one inflated
+        final View root = view;
+        root.findViewById(R.id.cancelBtn).setOnClickListener(v -> dismiss());
+        root.findViewById(R.id.saveBtn).setOnClickListener(v -> save(root));
 
         return view;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private void handleIncomeBtn(View v){
+    // ------------------------------------------------------------------------------- layout
 
-        String income = ((EditText)v.findViewById(R.id.incValue)).getText().toString();
-        String desc = ((EditText)v.findViewById(R.id.descIncValue)).getText().toString();
+    private void setHeader(){
+        String what = isIncome ? "entrata" : "uscita";
+        ((TextView) view.findViewById(R.id.dialogTitle))
+                .setText((transaction == null ? "Nuova " : "Modifica ") + what);
 
-        if (TextUtils.isEmpty(income) || eTranSubType.NONE.equals(type)) {
-            Toast.makeText(getActivity(), "Per favore, inserire valore e tipo per la transazione", Toast.LENGTH_SHORT).show();
-        }else{
-
-            TTransaction t;
-
-            if(transaction!=null){
-                transaction.setAmount(Double.valueOf(income));
-                transaction.setDescription(desc);
-                transaction.setTranSubType(type);
-                transaction.setDate(chosenDate.atStartOfDay().
-                        atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
-                dba.updateTransaction(transaction);
-                t = transaction;
-            }else{
-                t = dba.addTransaction(chosenDate, Double.valueOf(income), type, desc);
-            }
-
-            onNewTransaction(t);
-            dismissFragment();
-
-        }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private void handleExpBtn(View v){
-
-        String expense = ((EditText)v.findViewById(R.id.expValue)).getText().toString();
-        String desc = ((EditText)v.findViewById(R.id.descValue)).getText().toString();
-
-        if (TextUtils.isEmpty(expense) || eTranSubType.NONE.equals(type)) {
-            Toast.makeText(getActivity(), "Per favore, inserire valore e tipo per la transazione", Toast.LENGTH_SHORT).show();
-        }else{
-
-            TTransaction t;
-
-            if(transaction!=null){
-                transaction.setAmount(Double.valueOf(expense));
-                transaction.setDescription(desc);
-                transaction.setTranSubType(type);
-                transaction.setDate(chosenDate.atStartOfDay().
-                        atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
-                dba.updateTransaction(transaction);
-                t = transaction;
-            }else{
-                t = dba.addTransaction(chosenDate, Double.valueOf(expense), type, desc);
-            }
-
-            onNewTransaction(t);
-            dismissFragment();
-        }
-    }
-
-    // Manage switch after selection
-    private void handleSwitch(View v, Integer key, eTranSubType selected, boolean inc){
-
-        ColorStateList c = ColorStateList.valueOf(getResources().getColor(R.color.buttondefault, null));
-        ColorStateList ctr = ColorStateList.valueOf(getResources().getColor(R.color.trackdefault, null));
-
-        if(((Switch)v.findViewById(key)).isChecked()) {
-            type = selected;
-            if(inc){
-                c = ColorStateList.valueOf(getResources().getColor(R.color.dark_green, null));
-            }else{
-                c = ColorStateList.valueOf(getResources().getColor(R.color.dark_red, null));
-            }
-            ((Switch)v.findViewById(key)).setThumbTintList(c);
-            ((Switch)v.findViewById(key)).setTrackTintList(c);
-
-        }else {
-            type = eTranSubType.NONE;
-            ((Switch)v.findViewById(key)).setThumbTintList(c);
-            ((Switch)v.findViewById(key)).setTrackTintList(ctr);
+        // Same icon/colors as the Riepilogo cards
+        CategoryStyle style = CategoryStyle.of(isIncome ? eTranSubType.OTHER_INCOME : null);
+        ImageView icon = view.findViewById(R.id.dialogIcon);
+        if (isIncome) {
+            style.applyTo(icon);
+        } else {
+            icon.setImageResource(R.drawable.ic_arrow_out);
+            ImageViewCompat.setImageTintList(icon,
+                    ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.ew_expense)));
+            ViewCompat.setBackgroundTintList(icon,
+                    ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.ew_expense_container)));
         }
 
-        cleanSwitches(v,key);
+        MaterialButton save = view.findViewById(R.id.saveBtn);
+        save.setBackgroundTintList(ColorStateList.valueOf(
+                ContextCompat.getColor(requireContext(), isIncome ? R.color.ew_income : R.color.ew_expense)));
     }
 
-    // Clean all switches
-    private void cleanSwitches(View v, Integer key){
+    // One chip per category; the transaction's category (or the first one) is preselected
+    private void buildCategoryChips(LayoutInflater inflater){
+        ChipGroup group = view.findViewById(R.id.categoryChips);
+        eTranSubType current = transaction != null ? transaction.getTranSubType() : null;
+        eTranSubType[] types = isIncome ? INCOME_TYPES : EXPENSE_TYPES;
 
-        ColorStateList c = ColorStateList.valueOf(getResources().getColor(R.color.buttondefault, null));
-        ColorStateList ctr = ColorStateList.valueOf(getResources().getColor(R.color.trackdefault, null));
-        if(!type.equals(eTranSubType.NONE)){
-            for (Integer s : switches) {
-                if(!s.equals(key)){
-                    ((Switch)v.findViewById(s)).setChecked(false);
-                    ((Switch)v.findViewById(s)).setThumbTintList(c);
-                    ((Switch)v.findViewById(s)).setTrackTintList(ctr);
-                }
-            }
+        int toCheck = View.NO_ID;
+        for (eTranSubType t : types) {
+            Chip chip = (Chip) inflater.inflate(R.layout.category_chip, group, false);
+            chip.setId(View.generateViewId());
+            chip.setText(t.toString());
+            chipTypes.put(chip.getId(), t);
+            group.addView(chip);
+            if (toCheck == View.NO_ID || t == current) toCheck = chip.getId();
         }
+        group.check(toCheck);
     }
+
+    private eTranSubType selectedType(View root){
+        ChipGroup group = root.findViewById(R.id.categoryChips);
+        eTranSubType t = chipTypes.get(group.getCheckedChipId());
+        return t != null ? t : eTranSubType.NONE;
+    }
+
+    // ------------------------------------------------------------------------------- date
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void manageDateButton(View view){
+    private void manageDateField(){
+        EditText date = view.findViewById(R.id.dateValue);
+        date.setText(chosenDate.format(DATE_FORMAT));
 
-        Button date = view.findViewById(isIncome ? R.id.dateBtn2 : R.id.dateBtn);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy");
-        date.setText(chosenDate.format(formatter));
-        date.setOnClickListener(v -> {
-
-            MaterialDatePicker.Builder<Long> builder = MaterialDatePicker.Builder.datePicker();
-            builder.setCalendarConstraints(setCalendarConstraint().build())
+        View.OnClickListener open = v -> {
+            MaterialDatePicker<Long> picker = MaterialDatePicker.Builder.datePicker()
+                    .setCalendarConstraints(setCalendarConstraint().build())
+                    .setSelection(chosenDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli())
                     .setTitleText("Seleziona una data")
-                    .setTheme(R.style.MaterialCalendarTheme);
-
-            MaterialDatePicker<Long> datePicker = builder.build();
-            datePicker.show(getParentFragmentManager(), "DATE_PICKER");
-
-            datePicker.addOnPositiveButtonClickListener(selection -> {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    chosenDate = Instant.ofEpochMilli(datePicker.getSelection()).atZone(ZoneId.systemDefault()).toLocalDate();;
-                    date.setText(chosenDate.format(formatter));
-                }
+                    .setTheme(R.style.MaterialCalendarTheme)
+                    .build();
+            picker.addOnPositiveButtonClickListener(selection -> {
+                // The picker returns midnight UTC of the chosen day
+                chosenDate = Instant.ofEpochMilli(selection).atZone(ZoneOffset.UTC).toLocalDate();
+                date.setText(chosenDate.format(DATE_FORMAT));
             });
-        });
+            picker.show(getParentFragmentManager(), "DATE_PICKER");
+        };
+        date.setOnClickListener(open);
+        ((TextInputLayout) view.findViewById(R.id.dateLayout)).setEndIconOnClickListener(open);
     }
 
+    // Only days of the month shown in Home can be picked
     private CalendarConstraints.Builder setCalendarConstraint(){
-
         TMonth m = getMonth();
         TYear y = dba.getYearById(m.getYearId());
+        LocalDate first = LocalDate.of(y.getYear(), m.getMonth(), 1);
+        LocalDate last = first.withDayOfMonth(first.lengthOfMonth());
 
         CalendarConstraints.Builder constraintsBuilder = new CalendarConstraints.Builder();
-
-        Calendar startCalendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-        startCalendar.set(y.getYear(), m.getMonth() - 1, 1, 0, 0, 0);
-        long startDate = startCalendar.getTimeInMillis();
-
-        Calendar endCalendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-        endCalendar.set(y.getYear(), m.getMonth() - 1, 1);
-        endCalendar.set(Calendar.DAY_OF_MONTH, endCalendar.getActualMaximum(Calendar.DAY_OF_MONTH));
-        endCalendar.set(Calendar.HOUR_OF_DAY, 23);
-        endCalendar.set(Calendar.MINUTE, 59);
-        endCalendar.set(Calendar.SECOND, 59);
-        long endDate = endCalendar.getTimeInMillis();
-
-        constraintsBuilder.setStart(startDate);
-        constraintsBuilder.setEnd(endDate);
-
+        constraintsBuilder.setStart(first.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli());
+        constraintsBuilder.setEnd(last.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli());
+        constraintsBuilder.setOpenAt(chosenDate.withDayOfMonth(1).atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli());
         return constraintsBuilder;
     }
 
     private TMonth getMonth(){
         TodayActivityPage todPage = (TodayActivityPage) listner.getParentPage();
         return todPage.getMonth();
+    }
+
+    // ------------------------------------------------------------------------------- save
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void save(View root){
+        TextInputLayout amountLayout = root.findViewById(R.id.amountLayout);
+        String raw = ((EditText) root.findViewById(R.id.amountValue)).getText().toString().trim().replace(',', '.');
+        String desc = ((EditText) root.findViewById(R.id.descValue)).getText().toString().trim();
+        eTranSubType type = selectedType(root);
+
+        double amount;
+        try {
+            amount = Double.parseDouble(raw);
+        } catch (NumberFormatException e) {
+            amountLayout.setError("Inserisci un importo");
+            return;
+        }
+        if (amount <= 0) {
+            amountLayout.setError("L'importo deve essere maggiore di zero");
+            return;
+        }
+        amountLayout.setError(null);
+        if (eTranSubType.NONE.equals(type)) {
+            Toast.makeText(getActivity(), "Scegli una categoria", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        TTransaction t;
+        if (transaction != null) {
+            transaction.setAmount(amount);
+            transaction.setDescription(desc);
+            transaction.setTranSubType(type);
+            transaction.setDate(chosenDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
+            dba.updateTransaction(transaction);
+            t = transaction;
+        } else {
+            t = dba.addTransaction(chosenDate, amount, type, desc);
+        }
+
+        onNewTransaction(t);
+        dismissFragment();
+    }
+
+    // 12.5 → "12,50", 30.0 → "30"
+    private static String formatAmount(double v){
+        DecimalFormat f = new DecimalFormat("0.##", DecimalFormatSymbols.getInstance(Locale.ITALY));
+        String s = f.format(v);
+        if (s.contains(",") && s.indexOf(',') == s.length() - 2) s += "0";
+        return s;
     }
 }
