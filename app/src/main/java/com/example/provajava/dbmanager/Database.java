@@ -18,10 +18,22 @@ import com.example.provajava.querydao.*;
 
 import java.util.List;
 
-@androidx.room.Database(entities = {TTransaction.class, TDay.class, TMonth.class, TYear.class}, version = 2)
+@androidx.room.Database(entities = {TTransaction.class, TDay.class, TMonth.class, TYear.class}, version = Database.DB_VERSION)
 public abstract class Database extends RoomDatabase {
-    
+
+    // Current schema version (also used to validate imported backups)
+    public static final int DB_VERSION = 2;
+
     private static volatile Database INSTANCE;
+
+    // Close the database and drop the singleton, so the next getInstance() reopens the file from disk.
+    // Used before replacing the db file with an imported backup.
+    public static synchronized void closeInstance() {
+        if (INSTANCE != null) {
+            INSTANCE.close();
+            INSTANCE = null;
+        }
+    }
     
     public abstract TTransactionDAO getTransactionDAO();
     public abstract TDayDAO getDayDAO();

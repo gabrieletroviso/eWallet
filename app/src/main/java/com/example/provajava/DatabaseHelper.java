@@ -1,7 +1,10 @@
 package com.example.provajava;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Environment;
 import android.util.Log;
@@ -109,6 +112,139 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         input.close();
         getWritableDatabase();
         Database.getInstance(context);
+    }
+
+    // ---------------------------------------------------------------------------------------------
+    // Export / import through the Storage Access Framework (e.g. Google Drive picked by the user).
+    // Both methods do blocking I/O (Drive may hit the network): call them off the main thread.
+    // ---------------------------------------------------------------------------------------------
+
+    private static final String IMPORT_TMP = "eWalletDB_import.tmp";
+    private static final String BEFORE_RESTORE = "eWalletDB_before_restore.db";
+    private static final String PREFS = "ewallet_prefs";
+    private static final String PREF_LAST_EXPORT = "last_drive_export";
+
+    // Write a consistent copy of the db to the given document uri
+    public void exportDatabase(Uri destination) throws IOException {
+
+        // Room works in WAL mode: flush the -wal file into the main db file before copying,
+        // otherwise the most recent changes could be missing from the backup.
+        Cursor c = Database.getInstance(context).getOpenHelper().getWritableDatabase()
+                .query("PRAGMA wal_checkpoint(FULL)");
+        c.moveToFirst();
+        c.close();
+
+        File dbFile = context.getDatabasePath(Tools.DATABASE_NAME);
+        if (!dbFile.exists()) {
+            throw new IOException("Database non trovato");
+        }
+
+        try (InputStream in = new FileInputStream(dbFile);
+             OutputStream out = context.getContentResolver().openOutputStream(destination, "w")) {
+            if (out == null) {
+                throw new IOException("Impossibile scrivere sul file scelto");
+            }
+            copy(in, out);
+        }
+
+        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit()
+                .putLong(PREF_LAST_EXPORT, System.currentTimeMillis()).apply();
+    }
+
+    // Replace the current db with the one read from the given document uri.
+    // The app must be restarted afterwards.
+    public void importDatabase(Uri source) throws IOException {
+
+        File dbFile = context.getDatabasePath(Tools.DATABASE_NAME);
+        File dbDir = dbFile.getParentFile();
+        File tmp = new File(dbDir, IMPORT_TMP);
+
+        // 1. Download into a temp file, so a failed/partial read never touches the real db
+        try (InputStream in = context.getContentResolver().openInputStream(source);
+             OutputStream out = new FileOutputStream(tmp)) {
+            if (in == null) {
+                throw new IOException("Impossibile leggere il file scelto");
+            }
+            copy(in, out);
+        } catch (IOException e) {
+            tmp.delete();
+            throw e;
+        }
+
+        // 2. Check that it really is an eWallet db with a supported schema version
+        try {
+            validateBackup(tmp);
+        } catch (IOException e) {
+            tmp.delete();
+            throw e;
+        }
+
+        // 3. Close Room, keep a copy of the current db, then swap the files
+        Database.closeInstance();
+
+        if (dbFile.exists()) {
+            File before = new File(dbDir, BEFORE_RESTORE);
+            before.delete();
+            try (InputStream in = new FileInputStream(dbFile);
+                 OutputStream out = new FileOutputStream(before)) {
+                copy(in, out);
+            }
+        }
+
+        new File(dbDir, Tools.DATABASE_NAME + "-wal").delete();
+        new File(dbDir, Tools.DATABASE_NAME + "-shm").delete();
+        new File(dbDir, Tools.DATABASE_NAME + "-journal").delete();
+        dbFile.delete();
+
+        if (!tmp.renameTo(dbFile)) {
+            tmp.delete();
+            throw new IOException("Impossibile sostituire il database");
+        }
+    }
+
+    // Date of the last export done from this device, null if none
+    public LocalDate getLastExportDate() {
+        long ts = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getLong(PREF_LAST_EXPORT, 0);
+        if (ts == 0) {
+            return null;
+        }
+        return Instant.ofEpochMilli(ts).atZone(ZoneId.systemDefault()).toLocalDate();
+    }
+
+    private void validateBackup(File file) throws IOException {
+        SQLiteDatabase db;
+        try {
+            db = SQLiteDatabase.openDatabase(file.getPath(), null, SQLiteDatabase.OPEN_READONLY);
+        } catch (Exception e) {
+            throw new IOException("Il file scelto non è un database valido");
+        }
+        try {
+            if (DatabaseUtils.queryNumEntries(db, "sqlite_master",
+                    "type = 'table' AND name = 'T_Transaction'") == 0) {
+                throw new IOException("Il file scelto non è un backup di eWallet");
+            }
+            if (db.getVersion() > Database.DB_VERSION) {
+                throw new IOException("Backup creato con una versione più recente dell'app");
+            }
+        } catch (IOException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new IOException("Il file scelto non è un database valido");
+        } finally {
+            db.close();
+            // Opening a WAL-mode file leaves -wal/-shm companions next to it: remove them
+            new File(file.getPath() + "-wal").delete();
+            new File(file.getPath() + "-shm").delete();
+        }
+    }
+
+    private static void copy(InputStream in, OutputStream out) throws IOException {
+        byte[] buffer = new byte[8192];
+        int length;
+        while ((length = in.read(buffer)) > 0) {
+            out.write(buffer, 0, length);
+        }
+        out.flush();
     }
 
     @Override

@@ -74,11 +74,12 @@
             android:layout_marginStart="184dp"
             android:layout_marginEnd="184dp"
             android:fontFamily="@font/nunito"
-            android:text="TextView"
+            android:layout_marginTop="382dp"
+            android:text=""
             android:textSize="10sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="382dp" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textView"
