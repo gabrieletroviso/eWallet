@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Notifiche raccolte dalle app di pagamento, così come sono arrivate (materiale per i parser) -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ew_background"
+    android:orientation="vertical">
+
+    <!-- Intestazione: indietro + titolo -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="8dp"
+        android:paddingEnd="16dp">
+
+        <ImageButton
+            android:id="@+id/backBtn"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Indietro"
+            android:src="@drawable/ic_chevron_left"
+            app:tint="@color/ew_text" />
+
+        <TextView
+            android:fontFamily="@font/nunito_extrabold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_weight="1"
+            android:letterSpacing="-0.01"
+            android:text="Notifiche raccolte"
+            android:textColor="@color/ew_text"
+            android:textSize="22sp" />
+    </LinearLayout>
+
+    <TextView
+        android:fontFamily="@font/nunito_semibold"
+        android:id="@+id/capturedCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="22dp"
+        android:textColor="@color/ew_text_secondary"
+        android:textSize="13sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:fontFamily="@font/nunito_extrabold"
+            android:id="@+id/clearCapturedBtn"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="6dp"
+            android:layout_weight="1"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="Svuota"
+            android:textAllCaps="false"
+            android:textColor="@color/ew_expense"
+            android:textSize="15sp"
+            app:cornerRadius="16dp"
+            app:rippleColor="@color/ew_expense_container"
+            app:strokeColor="@color/ew_expense"
+            app:strokeWidth="1.5dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:fontFamily="@font/nunito_extrabold"
+            android:id="@+id/copyCapturedBtn"
+            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="6dp"
+            android:layout_weight="1"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="Copia tutto"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            app:backgroundTint="@color/ew_primary"
+            app:cornerRadius="16dp" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:paddingStart="16dp"
+        android:paddingTop="12dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="20dp">
+
+        <LinearLayout
+            android:id="@+id/capturedList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </ScrollView>
+
+    <TextView
+        android:fontFamily="@font/nunito_semibold"
+        android:id="@+id/capturedEmpty"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:padding="32dp"
+        android:text="Nessuna notifica raccolta.\nFai un pagamento e torna qui."
+        android:textColor="@color/ew_text_secondary"
+        android:textSize="14sp"
+        android:visibility="gone" />
+</LinearLayout>

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,10 +19,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.provajava.DatabaseHelper;
 import com.example.provajava.R;
+import com.example.provajava.capture.PaymentNotificationListener;
+import com.example.provajava.gui.activity.CapturedNotificationsActivity;
 import com.example.provajava.gui.ConfirmDialog;
 import com.example.provajava.gui.Notice;
 import com.example.provajava.datamodel.TTransaction;
@@ -116,6 +120,11 @@ public class ToolFragment extends Fragment implements iFragmentManaged {
                     Notice.success(getActivity(), "Dati cancellati");
                 }));
         save.setOnClickListener(v -> createDBBackup());
+
+        view.findViewById(R.id.notifAccessBtn).setOnClickListener(v ->
+                startActivity(new Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)));
+        view.findViewById(R.id.notifListBtn).setOnClickListener(v ->
+                startActivity(new Intent(requireContext(), CapturedNotificationsActivity.class)));
         restore.setOnClickListener(v -> ConfirmDialog.normal(requireContext(), R.drawable.ic_restore,
                 "Ripristinare un backup?",
                 "Il database attuale verrà sostituito con il backup che scegli e l'app verrà riavviata.",
@@ -133,6 +142,23 @@ public class ToolFragment extends Fragment implements iFragmentManaged {
         }
 
         ((TextView) view.findViewById(R.id.versionText)).setText("eWallet · " + MainActivity.VER);
+        populateNotificationStatus();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // The user may come back from the system "Accesso alle notifiche" screen
+        if (view != null) populateNotificationStatus();
+    }
+
+    private void populateNotificationStatus() {
+        boolean granted = PaymentNotificationListener.isAccessGranted(requireContext());
+        TextView status = view.findViewById(R.id.notifStatus);
+        status.setText(granted ? "Attiva" : "Non attiva: tocca Accesso e abilita eWallet");
+        status.setTextColor(ContextCompat.getColor(requireContext(),
+                granted ? R.color.ew_income : R.color.ew_text_secondary));
+        ((Button) view.findViewById(R.id.notifAccessBtn)).setText(granted ? "Gestisci" : "Attiva");
     }
 
     private void createDBBackup(){

@@ -138,6 +138,94 @@
             </LinearLayout>
         </LinearLayout>
 
+        <!-- ===== Pagamenti dalle notifiche ===== -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="10dp"
+            android:text="Pagamenti dalle notifiche"
+            android:textColor="@color/ew_text_secondary"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border"
+            android:orientation="vertical"
+            android:padding="18dp">
+
+            <TextView
+                android:fontFamily="@font/nunito_extrabold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Raccolta notifiche"
+                android:textColor="@color/ew_text"
+                android:textSize="16sp" />
+
+            <TextView
+                android:fontFamily="@font/nunito_semibold"
+                android:id="@+id/notifStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textColor="@color/ew_text_secondary"
+                android:textSize="13sp" />
+
+            <TextView
+                android:fontFamily="@font/nunito_semibold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Salva sul telefono le notifiche di Fineco, BPER, PayPal e Google Wallet. Per ora servono a costruire il riconoscimento dei pagamenti: nessun movimento viene creato."
+                android:textColor="@color/ew_text_secondary"
+                android:textSize="13sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:fontFamily="@font/nunito_extrabold"
+                    android:id="@+id/notifAccessBtn"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="52dp"
+                    android:layout_marginEnd="6dp"
+                    android:layout_weight="1"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:text="Accesso"
+                    android:textAllCaps="false"
+                    android:textColor="@color/ew_text"
+                    android:textSize="15sp"
+                    app:cornerRadius="16dp"
+                    app:strokeColor="@color/ew_outline"
+                    app:strokeWidth="1.5dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:fontFamily="@font/nunito_extrabold"
+                    android:id="@+id/notifListBtn"
+                    style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="52dp"
+                    android:layout_marginStart="6dp"
+                    android:layout_weight="1"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:text="Raccolte"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    app:backgroundTint="@color/ew_primary"
+                    app:cornerRadius="16dp" />
+            </LinearLayout>
+        </LinearLayout>
+
         <!-- ===== Dati ===== -->
         <TextView
             android:layout_width="wrap_content"

@@ -27,6 +27,17 @@
             android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".gui.activity.SearchActivityPage"
             android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".gui.activity.CapturedNotificationsActivity" />
+
+        <!-- Legge le notifiche delle app di pagamento (l'utente concede "Accesso alle notifiche") -->
+        <service android:name=".capture.PaymentNotificationListener"
+            android:label="@string/app_name"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+        </service>
 
     </application>
 
