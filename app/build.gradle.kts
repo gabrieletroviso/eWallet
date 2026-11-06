@@ -7,14 +7,14 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.provajava"
+        applicationId = "com.gabriele.ewallet"
         minSdk = 26
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "1.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        setProperty("archivesBaseName", "eWallet-v1.0")
+        setProperty("archivesBaseName", "eWallet-v${versionName}")
     }
 
     buildTypes {
